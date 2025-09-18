@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../controllers/settings_provider.dart';
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+  const SettingsScreen({super.key});
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -73,7 +74,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     context: context,
                     builder: (context) => AlertDialog(
                       title: const Text('Reset Settings'),
-                      content: const Text('Are you sure you want to reset all settings to their default values?'),
+                      content: const Text(
+                          'Are you sure you want to reset all settings to their default values?'),
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.of(context).pop(),
@@ -84,10 +86,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             settingsProvider.resetSettings();
                             Navigator.of(context).pop();
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Settings reset to defaults')),
+                              const SnackBar(
+                                  content: Text('Settings reset to defaults')),
                             );
                           },
-                          style: TextButton.styleFrom(foregroundColor: Colors.red),
+                          style:
+                              TextButton.styleFrom(foregroundColor: Colors.red),
                           child: const Text('Reset'),
                         ),
                       ],
@@ -105,9 +109,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     context: context,
                     applicationName: 'LoanBuddy',
                     applicationVersion: '1.0.0',
-                    applicationIcon: const Icon(Icons.account_balance, size: 32),
+                    applicationIcon:
+                        const Icon(Icons.account_balance, size: 32),
                     children: [
-                      const Text('LoanBuddy helps you keep track of your personal loans and send payment reminders via WhatsApp.'),
+                      const Text(
+                          'LoanBuddy helps you keep track of your personal loans and send payment reminders via WhatsApp.'),
                     ],
                   );
                 },
@@ -159,7 +165,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           );
           if (picked != null) {
-            onChanged('${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}');
+            onChanged(
+                '${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}');
           }
         },
       ),
