@@ -320,7 +320,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget _buildSearchAndFilters() {
     final theme = Theme.of(context);
-    
+
     return AnimatedContainer(
       duration: Constants.animationDuration,
       padding: const EdgeInsets.fromLTRB(
@@ -421,7 +421,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       if (value == 'completed') return const Color(0xFF43A047);
       return theme.colorScheme.primary;
     }();
-    
+
     return Padding(
       padding: const EdgeInsets.only(right: 12.0),
       child: AnimatedContainer(
@@ -431,9 +431,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
             label,
             style: TextStyle(
               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-              color: isSelected 
-                ? theme.brightness == Brightness.light ? Colors.white : Colors.white
-                : theme.colorScheme.onSurface,
+              color: isSelected
+                  ? theme.brightness == Brightness.light
+                      ? Colors.white
+                      : Colors.white
+                  : theme.colorScheme.onSurface,
             ),
           ),
           selected: isSelected,
@@ -451,9 +453,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
             side: BorderSide(
-              color: isSelected 
-                ? Colors.transparent 
-                : theme.colorScheme.outline.withOpacity(0.3),
+              color: isSelected
+                  ? Colors.transparent
+                  : theme.colorScheme.outline.withOpacity(0.3),
               width: 1,
             ),
           ),
