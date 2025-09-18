@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import 'controllers/loan_provider.dart';
 import 'controllers/payment_provider.dart';
 import 'controllers/settings_provider.dart';
@@ -9,10 +10,10 @@ import 'views/screens/dashboard_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Initialize notifications
   await NotificationService.initialize();
-  
+
   runApp(const MyApp());
 }
 
@@ -27,9 +28,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => SettingsProvider()),
         ChangeNotifierProvider(create: (_) => LoanProvider()),
         ChangeNotifierProxyProvider<LoanProvider, PaymentProvider>(
-          create: (context) => PaymentProvider(Provider.of<LoanProvider>(context, listen: false)),
-          update: (context, loanProvider, previous) => 
-            previous ?? PaymentProvider(loanProvider),
+          create: (context) => PaymentProvider(
+              Provider.of<LoanProvider>(context, listen: false)),
+          update: (context, loanProvider, previous) =>
+              previous ?? PaymentProvider(loanProvider),
         ),
       ],
       child: Consumer<SettingsProvider>(
@@ -37,7 +39,9 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             title: 'LoanBuddy',
             debugShowCheckedModeBanner: false,
-            theme: settingsProvider.isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme,
+            theme: settingsProvider.isDarkMode
+                ? AppTheme.darkTheme
+                : AppTheme.lightTheme,
             home: const DashboardScreen(),
           );
         },
