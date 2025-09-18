@@ -319,27 +319,93 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildSearchAndFilters() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Constants.defaultPadding),
+    final theme = Theme.of(context);
+    
+    return AnimatedContainer(
+      duration: Constants.animationDuration,
+      padding: const EdgeInsets.fromLTRB(
+        Constants.defaultPadding,
+        Constants.defaultPadding / 2,
+        Constants.defaultPadding,
+        Constants.defaultPadding,
+      ),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: const BorderRadius.vertical(
+          bottom: Radius.circular(16),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: theme.shadowColor.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextField(
             controller: _searchController,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               hintText: 'Search by borrower name',
-              prefixIcon: Icon(Icons.search),
-              border: OutlineInputBorder(),
+              prefixIcon: const Icon(Icons.search),
+              suffixIcon: _searchQuery.isNotEmpty
+                  ? IconButton(
+                      icon: const Icon(Icons.clear),
+                      onPressed: () {
+                        _searchController.clear();
+                        _searchLoans('');
+                      },
+                    )
+                  : null,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
+                  color: theme.colorScheme.outline.withOpacity(0.3),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
+                  color: theme.colorScheme.outline.withOpacity(0.3),
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
+                  color: theme.colorScheme.primary,
+                  width: 2,
+                ),
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 14,
+              ),
+              hintStyle: TextStyle(
+                color: theme.colorScheme.onSurfaceVariant.withOpacity(0.6),
+              ),
+              filled: true,
+              fillColor: theme.colorScheme.surfaceContainerLow,
             ),
             onChanged: _searchLoans,
+            style: theme.textTheme.bodyLarge,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Filter by status:',
+            style: theme.textTheme.labelLarge?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
           ),
           const SizedBox(height: 8),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                _buildFilterChip('All', 'all'),
-                _buildFilterChip('Active', 'active'),
-                _buildFilterChip('Completed', 'completed'),
+                _buildFilterChip('All', 'all', theme),
+                _buildFilterChip('Active', 'active', theme),
+                _buildFilterChip('Completed', 'completed', theme),
               ],
             ),
           ),
@@ -348,17 +414,50 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _buildFilterChip(String label, String value) {
+  Widget _buildFilterChip(String label, String value, ThemeData theme) {
+    final isSelected = _filter == value;
+    final chipColor = () {
+      if (value == 'active') return const Color(0xFFFFA726);
+      if (value == 'completed') return const Color(0xFF43A047);
+      return theme.colorScheme.primary;
+    }();
+    
     return Padding(
-      padding: const EdgeInsets.only(right: 8.0),
-      child: ChoiceChip(
-        label: Text(label),
-        selected: _filter == value,
-        onSelected: (selected) {
-          if (selected) {
-            _onFilterChanged(value);
-          }
-        },
+      padding: const EdgeInsets.only(right: 12.0),
+      child: AnimatedContainer(
+        duration: Constants.animationDuration,
+        child: FilterChip(
+          label: Text(
+            label,
+            style: TextStyle(
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              color: isSelected 
+                ? theme.brightness == Brightness.light ? Colors.white : Colors.white
+                : theme.colorScheme.onSurface,
+            ),
+          ),
+          selected: isSelected,
+          onSelected: (selected) {
+            if (selected) {
+              _onFilterChanged(value);
+            }
+          },
+          backgroundColor: theme.colorScheme.surfaceContainerHighest,
+          selectedColor: chipColor,
+          checkmarkColor: Colors.white,
+          showCheckmark: true,
+          elevation: isSelected ? 2 : 0,
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+            side: BorderSide(
+              color: isSelected 
+                ? Colors.transparent 
+                : theme.colorScheme.outline.withOpacity(0.3),
+              width: 1,
+            ),
+          ),
+        ),
       ),
     );
   }
