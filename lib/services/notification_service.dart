@@ -1,9 +1,10 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 import '../models/loan_model.dart';
 
 class NotificationService {
-  static final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  static final FlutterLocalNotificationsPlugin
+      _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   static Future<void> initialize() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
@@ -16,7 +17,8 @@ class NotificationService {
       requestAlertPermission: true,
     );
 
-    const InitializationSettings initializationSettings = InitializationSettings(
+    const InitializationSettings initializationSettings =
+        InitializationSettings(
       android: initializationSettingsAndroid,
       iOS: initializationSettingsIOS,
     );
@@ -40,19 +42,19 @@ class NotificationService {
       priority: Priority.high,
       playSound: true,
     );
-    
+
     const DarwinNotificationDetails iOSPlatformChannelSpecifics =
         DarwinNotificationDetails(
       presentAlert: true,
       presentBadge: true,
       presentSound: true,
     );
-    
+
     const NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
       iOS: iOSPlatformChannelSpecifics,
     );
-    
+
     await _flutterLocalNotificationsPlugin.show(
       id,
       title,
@@ -65,10 +67,10 @@ class NotificationService {
   static Future<void> scheduleLoanReminder(Loan loan) async {
     // Only schedule for active loans
     if (loan.status != LoanStatus.active) return;
-    
+
     // Calculate days remaining to due date
     final daysRemaining = loan.dueDate.difference(DateTime.now()).inDays;
-    
+
     // Schedule notifications based on days remaining
     if (daysRemaining <= 0) {
       // Overdue notification
@@ -86,7 +88,7 @@ class NotificationService {
       );
     }
   }
-  
+
   // Schedule notifications for all active loans
   static Future<void> scheduleAllReminders(List<Loan> loans) async {
     for (final loan in loans) {
