@@ -89,11 +89,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   int _selectedIndex = 0;
-  
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -150,7 +150,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           setState(() {
             _selectedIndex = index;
           });
-          
+
           // This could be expanded to handle navigation between different screens
           if (index == 1) {
             // Reports screen (placeholder)
