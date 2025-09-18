@@ -405,32 +405,42 @@ class EmptyStateWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Padding(
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.all(32.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              size: 64,
-              color: Theme.of(context).colorScheme.outline,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              message,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.outline,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: MediaQuery.of(context).size.height -
+                350, // Adjust to avoid overflow
+          ),
+          child: IntrinsicHeight(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  icon,
+                  size: 64,
+                  color: Theme.of(context).colorScheme.outline,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  message,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.outline,
+                      ),
+                ),
+                const SizedBox(height: 24),
+                if (onPressed != null)
+                  ElevatedButton.icon(
+                    onPressed: onPressed,
+                    icon: const Icon(Icons.add),
+                    label: Text(buttonText),
                   ),
+              ],
             ),
-            const SizedBox(height: 24),
-            if (onPressed != null)
-              ElevatedButton.icon(
-                onPressed: onPressed,
-                icon: const Icon(Icons.add),
-                label: Text(buttonText),
-              ),
-          ],
+          ),
         ),
       ),
     );
@@ -520,7 +530,7 @@ class CustomLoadingIndicator extends StatelessWidget {
         ),
       );
     }
-    
+
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -540,7 +550,6 @@ class CustomLoadingIndicator extends StatelessWidget {
     );
   }
 }
-
 
 class ConfirmationDialog extends StatelessWidget {
   final String title;
