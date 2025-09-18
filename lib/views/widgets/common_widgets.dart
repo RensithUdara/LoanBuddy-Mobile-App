@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../models/loan_model.dart';
 import '../../services/whatsapp_service.dart';
 import '../../utils/app_utils.dart';
+import 'shimmer_effects.dart';
 
 class LoanCard extends StatelessWidget {
   final Loan loan;
@@ -438,25 +439,39 @@ class EmptyStateWidget extends StatelessWidget {
 
 class CustomLoadingIndicator extends StatelessWidget {
   final String message;
+  final bool useShimmer;
 
   const CustomLoadingIndicator({
     super.key,
     this.message = 'Loading...',
+    this.useShimmer = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    if (useShimmer) {
+      return const ShimmerLoadingView();
+    }
+    
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const CircularProgressIndicator(),
+          CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(
+              Theme.of(context).colorScheme.primary,
+            ),
+          ),
           const SizedBox(height: 16),
-          Text(message),
+          Text(
+            message,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
         ],
       ),
     );
   }
+}
 }
 
 class ConfirmationDialog extends StatelessWidget {
