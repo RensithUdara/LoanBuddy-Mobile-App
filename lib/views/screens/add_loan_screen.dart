@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
 import '../../controllers/loan_provider.dart';
 import '../../models/loan_model.dart';
 import '../../utils/app_utils.dart';
 
 class AddLoanScreen extends StatefulWidget {
-  const AddLoanScreen({Key? key}) : super(key: key);
+  const AddLoanScreen({super.key});
 
   @override
   State<AddLoanScreen> createState() => _AddLoanScreenState();
@@ -59,7 +60,8 @@ class _AddLoanScreenState extends State<AddLoanScreen> {
 
       try {
         // Parse the amount
-        final amount = double.parse(_amountController.text.replaceAll(RegExp(r'[^\d.]'), ''));
+        final amount = double.parse(
+            _amountController.text.replaceAll(RegExp(r'[^\d.]'), ''));
 
         // Create the loan object
         final loan = Loan(
@@ -136,9 +138,9 @@ class _AddLoanScreenState extends State<AddLoanScreen> {
                     const SizedBox(height: 16),
                     TextFormField(
                       controller: _amountController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Loan Amount',
-                        prefixIcon: const Icon(Icons.currency_rupee),
+                        prefixIcon: Icon(Icons.currency_rupee),
                         prefixText: '₹ ',
                         hintText: '0',
                       ),
