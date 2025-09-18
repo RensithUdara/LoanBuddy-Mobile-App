@@ -94,7 +94,7 @@ class Formatters {
   static String formatPhoneNumber(String number) {
     // Remove non-digit characters
     final digits = number.replaceAll(RegExp(r'[^\d]'), '');
-    
+
     if (digits.length <= 5) {
       return digits;
     } else if (digits.length <= 10) {
@@ -118,12 +118,12 @@ class Validators {
     if (value == null || value.isEmpty) {
       return 'Please enter a phone number';
     }
-    
+
     final digits = value.replaceAll(RegExp(r'[^\d]'), '');
     if (digits.length < 10) {
       return 'Please enter a valid phone number';
     }
-    
+
     return null;
   }
 
@@ -143,16 +143,16 @@ class Validators {
     if (value == null || value.isEmpty) {
       return 'Please enter an amount';
     }
-    
+
     final amount = double.tryParse(value.replaceAll(RegExp(r'[^\d.]'), ''));
     if (amount == null) {
       return 'Please enter a valid amount';
     }
-    
+
     if (amount <= 0) {
       return 'Amount must be greater than zero';
     }
-    
+
     return null;
   }
 }
