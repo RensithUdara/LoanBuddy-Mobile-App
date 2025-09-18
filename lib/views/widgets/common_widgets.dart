@@ -405,41 +405,38 @@ class EmptyStateWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
+      child: Padding(
         padding: const EdgeInsets.all(32.0),
         child: ConstrainedBox(
           constraints: BoxConstraints(
             minHeight: MediaQuery.of(context).size.height -
                 350, // Adjust to avoid overflow
           ),
-          child: IntrinsicHeight(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  icon,
-                  size: 64,
-                  color: Theme.of(context).colorScheme.outline,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                size: 64,
+                color: Theme.of(context).colorScheme.outline,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                message,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.outline,
+                    ),
+              ),
+              const SizedBox(height: 24),
+              if (onPressed != null)
+                ElevatedButton.icon(
+                  onPressed: onPressed,
+                  icon: const Icon(Icons.add),
+                  label: Text(buttonText),
                 ),
-                const SizedBox(height: 16),
-                Text(
-                  message,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.outline,
-                      ),
-                ),
-                const SizedBox(height: 24),
-                if (onPressed != null)
-                  ElevatedButton.icon(
-                    onPressed: onPressed,
-                    icon: const Icon(Icons.add),
-                    label: Text(buttonText),
-                  ),
-              ],
-            ),
+            ],
           ),
         ),
       ),
@@ -460,74 +457,72 @@ class CustomLoadingIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (useShimmer) {
-      return SingleChildScrollView(
-        physics: const NeverScrollableScrollPhysics(),
-        child: Column(
-          children: [
-            const ShimmerStatCardsLoading(),
-            const SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Column(
-                children: [
-                  ShimmerEffect(
-                    child: Container(
-                      height: 56,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+      return Column(
+        children: [
+          const ShimmerStatCardsLoading(),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              children: [
+                ShimmerEffect(
+                  child: Container(
+                    height: 56,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      ShimmerEffect(
-                        child: Container(
-                          height: 32,
-                          width: 60,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    ShimmerEffect(
+                      child: Container(
+                        height: 32,
+                        width: 60,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      ShimmerEffect(
-                        child: Container(
-                          height: 32,
-                          width: 80,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
+                    ),
+                    const SizedBox(width: 8),
+                    ShimmerEffect(
+                      child: Container(
+                        height: 32,
+                        width: 80,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      ShimmerEffect(
-                        child: Container(
-                          height: 32,
-                          width: 90,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
+                    ),
+                    const SizedBox(width: 8),
+                    ShimmerEffect(
+                      child: Container(
+                        height: 32,
+                        width: 90,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
                         ),
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            const SizedBox(height: 16),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 3,
-              itemBuilder: (context, index) => const ShimmerLoanCardLoading(),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 16),
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: 3,
+            itemBuilder: (context, index) => const ShimmerLoanCardLoading(),
+          ),
+        ],
+      );
       );
     }
 
