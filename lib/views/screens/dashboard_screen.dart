@@ -136,86 +136,182 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _buildStatCards() {
     return Consumer<LoanProvider>(
       builder: (context, loanProvider, _) {
+        final theme = Theme.of(context);
+        
         return Container(
           padding: const EdgeInsets.all(Constants.defaultPadding),
-          child: Card(
-            child: Padding(
-              padding: const EdgeInsets.all(Constants.defaultPadding),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _buildStatItem(
-                        'Total Outstanding',
-                        Formatters.currencyFormat
-                            .format(loanProvider.totalOutstandingAmount),
-                        Colors.blue,
-                        Icons.account_balance,
-                      ),
-                      _buildStatItem(
-                        'Total Loans',
-                        '${loanProvider.loans.length}',
-                        Colors.green,
-                        Icons.people,
-                      ),
-                    ],
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0, bottom: 12.0),
+                child: Text(
+                  'Your Overview',
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
                   ),
-                  const SizedBox(height: 8),
-                  const Divider(),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _buildStatItem(
-                        'Active',
-                        '${loanProvider.loans.where((loan) => loan.status == LoanStatus.active).length}',
-                        Colors.orange,
-                        Icons.hourglass_bottom,
+                ),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: _buildGradientCard(
+                      title: 'Total Outstanding',
+                      value: Formatters.currencyFormat.format(loanProvider.totalOutstandingAmount),
+                      icon: Icons.account_balance,
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF1A73E8), Color(0xFF6C92F4)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
                       ),
-                      _buildStatItem(
-                        'Overdue',
-                        '${loanProvider.loans.where((loan) => loan.status == LoanStatus.active && loan.isOverdue).length}',
-                        Colors.red,
-                        Icons.warning_amber_outlined,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    flex: 2,
+                    child: _buildGradientCard(
+                      title: 'Total Loans',
+                      value: '${loanProvider.loans.length}',
+                      icon: Icons.people,
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF43A047), Color(0xFF66BB6A)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
                       ),
-                      _buildStatItem(
-                        'Completed',
-                        '${loanProvider.loans.where((loan) => loan.status == LoanStatus.completed).length}',
-                        Colors.green,
-                        Icons.check_circle_outline,
-                      ),
-                    ],
+                    ),
                   ),
                 ],
               ),
-            ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildStatusCard(
+                      title: 'Active',
+                      value: '${loanProvider.loans.where((loan) => loan.status == LoanStatus.active).length}',
+                      icon: Icons.hourglass_bottom,
+                      color: const Color(0xFFFFA726),
+                      theme: theme,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: _buildStatusCard(
+                      title: 'Overdue',
+                      value: '${loanProvider.loans.where((loan) => loan.status == LoanStatus.active && loan.isOverdue).length}',
+                      icon: Icons.warning_amber_outlined,
+                      color: const Color(0xFFE53935),
+                      theme: theme,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: _buildStatusCard(
+                      title: 'Completed',
+                      value: '${loanProvider.loans.where((loan) => loan.status == LoanStatus.completed).length}',
+                      icon: Icons.check_circle_outline,
+                      color: const Color(0xFF43A047),
+                      theme: theme,
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         );
       },
     );
   }
 
-  Widget _buildStatItem(
-      String label, String value, Color color, IconData icon) {
-    return Column(
-      children: [
-        Icon(icon, color: color, size: 24),
-        const SizedBox(height: 4),
-        Text(
-          value,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-            color: color,
-          ),
+  Widget _buildGradientCard({
+    required String title,
+    required String value,
+    required IconData icon,
+    required Gradient gradient,
+  }) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: gradient,
+          borderRadius: BorderRadius.circular(12),
         ),
-        const SizedBox(height: 2),
-        Text(
-          label,
-          style: Theme.of(context).textTheme.bodySmall,
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(icon, color: Colors.white, size: 28),
+            const SizedBox(height: 12),
+            Text(
+              value,
+              style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.white70,
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
+    );
+  }
+
+  Widget _buildStatusCard({
+    required String title,
+    required String value,
+    required IconData icon,
+    required Color color,
+    required ThemeData theme,
+  }) {
+    final brightness = theme.brightness;
+    final cardColor = brightness == Brightness.light
+        ? color.withOpacity(0.12)
+        : color.withOpacity(0.24);
+    
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: color.withOpacity(0.3), width: 1),
+      ),
+      color: cardColor,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+        child: Column(
+          children: [
+            Icon(icon, color: color, size: 22),
+            const SizedBox(height: 8),
+            Text(
+              value,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                color: color,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 12,
+                color: color.withOpacity(0.8),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
