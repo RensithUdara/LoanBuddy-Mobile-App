@@ -303,6 +303,8 @@ class _DashboardScreenState extends State<DashboardScreen>
                       builder: (context, loanProvider, _) {
                         if (loanProvider.isLoading) {
                           return const SliverFillRemaining(
+                            hasScrollBody: false,
+                            fillOverscroll: true,
                             child: CustomLoadingIndicator(useShimmer: true),
                           );
                         }
@@ -313,6 +315,8 @@ class _DashboardScreenState extends State<DashboardScreen>
 
                         if (filteredLoans.isEmpty) {
                           return SliverFillRemaining(
+                            hasScrollBody: false,
+                            fillOverscroll: true,
                             child: EmptyStateWidget(
                               message: _searchQuery.isNotEmpty
                                   ? 'No loans match your search'
