@@ -540,8 +540,7 @@ class CustomLoadingIndicator extends StatelessWidget {
     );
   }
 }
-}
-}
+
 
 class ConfirmationDialog extends StatelessWidget {
   final String title;
