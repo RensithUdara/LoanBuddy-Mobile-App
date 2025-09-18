@@ -410,7 +410,8 @@ class EmptyStateWidget extends StatelessWidget {
         padding: const EdgeInsets.all(32.0),
         child: ConstrainedBox(
           constraints: BoxConstraints(
-            minHeight: MediaQuery.of(context).size.height - 350, // Adjust to avoid overflow
+            minHeight: MediaQuery.of(context).size.height -
+                350, // Adjust to avoid overflow
           ),
           child: IntrinsicHeight(
             child: Column(
@@ -529,7 +530,7 @@ class CustomLoadingIndicator extends StatelessWidget {
         ),
       );
     }
-    
+
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -549,7 +550,6 @@ class CustomLoadingIndicator extends StatelessWidget {
     );
   }
 }
-
 
 class ConfirmationDialog extends StatelessWidget {
   final String title;
