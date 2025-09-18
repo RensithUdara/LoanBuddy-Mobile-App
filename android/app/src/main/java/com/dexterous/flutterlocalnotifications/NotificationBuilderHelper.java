@@ -15,14 +15,16 @@ import androidx.core.app.NotificationManagerCompat;
 import java.util.ArrayList;
 
 /**
- * This is a patched version of part of the FlutterLocalNotificationsPlugin class
+ * This is a patched version of part of the FlutterLocalNotificationsPlugin
+ * class
  * to fix the ambiguous reference to bigLargeIcon method.
  */
 @Keep
 public class NotificationBuilderHelper {
 
     /**
-     * Explicitly specifying the Bitmap version of bigLargeIcon to fix the ambiguous method reference.
+     * Explicitly specifying the Bitmap version of bigLargeIcon to fix the ambiguous
+     * method reference.
      */
     public static void setBigPictureStyleBigLargeIconToNull(NotificationCompat.BigPictureStyle bigPictureStyle) {
         // Using the Bitmap version of the method to avoid ambiguity
