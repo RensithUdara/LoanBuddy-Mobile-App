@@ -45,13 +45,13 @@ class _ShimmerEffectState extends State<ShimmerEffect>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final baseColor = widget.baseColor ?? 
-        (theme.brightness == Brightness.light 
-            ? const Color(0xFFE0E0E0) 
+    final baseColor = widget.baseColor ??
+        (theme.brightness == Brightness.light
+            ? const Color(0xFFE0E0E0)
             : const Color(0xFF3A3A3A));
-    final highlightColor = widget.highlightColor ?? 
-        (theme.brightness == Brightness.light 
-            ? const Color(0xFFF5F5F5) 
+    final highlightColor = widget.highlightColor ??
+        (theme.brightness == Brightness.light
+            ? const Color(0xFFF5F5F5)
             : const Color(0xFF505050));
 
     return AnimatedBuilder(
