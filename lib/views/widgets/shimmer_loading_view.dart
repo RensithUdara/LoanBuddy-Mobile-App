@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'shimmer_effects.dart';
 
 class ShimmerLoadingView extends StatelessWidget {
