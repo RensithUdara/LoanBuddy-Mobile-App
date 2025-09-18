@@ -21,8 +21,8 @@ class WhatsAppService {
       String phoneNumber = loan.whatsappNumber.replaceAll(RegExp(r'[^\d]'), '');
 
       // If phone number doesn't start with country code, add Indian country code
-      if (!phoneNumber.startsWith('91') && phoneNumber.length == 10) {
-        phoneNumber = '91$phoneNumber';
+      if (!phoneNumber.startsWith('94') && phoneNumber.length == 10) {
+        phoneNumber = '94$phoneNumber';
       }
 
       // Create WhatsApp URL
