@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../models/loan_model.dart';
 import '../services/database_helper.dart';
 
@@ -163,8 +164,9 @@ class LoanProvider extends ChangeNotifier {
   // Filter loans by name
   List<Loan> searchLoans(String query) {
     if (query.isEmpty) return _loans;
-    return _loans.where((loan) => 
-      loan.borrowerName.toLowerCase().contains(query.toLowerCase())
-    ).toList();
+    return _loans
+        .where((loan) =>
+            loan.borrowerName.toLowerCase().contains(query.toLowerCase()))
+        .toList();
   }
 }
