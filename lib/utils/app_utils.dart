@@ -236,8 +236,8 @@ class AppTheme {
 class Formatters {
   // Currency formatter
   static final currencyFormat = NumberFormat.currency(
-    symbol: '₹',
-    locale: 'en_IN',
+    symbol: 'Rs. ',
+    locale: 'en_LK',
     decimalDigits: 0,
   );
 
