@@ -302,10 +302,12 @@ class _DashboardScreenState extends State<DashboardScreen>
                     sliver: Consumer<LoanProvider>(
                       builder: (context, loanProvider, _) {
                         if (loanProvider.isLoading) {
-                          return const SliverFillRemaining(
-                            hasScrollBody: false,
-                            fillOverscroll: true,
-                            child: CustomLoadingIndicator(useShimmer: true),
+                          return SliverToBoxAdapter(
+                            child: Container(
+                              height: MediaQuery.of(context).size.height - 300, // Adjust this value as needed
+                              alignment: Alignment.center,
+                              child: const CustomLoadingIndicator(useShimmer: true),
+                            ),
                           );
                         }
 
@@ -314,27 +316,29 @@ class _DashboardScreenState extends State<DashboardScreen>
                             : loanProvider.searchLoans(_searchQuery);
 
                         if (filteredLoans.isEmpty) {
-                          return SliverFillRemaining(
-                            hasScrollBody: false,
-                            fillOverscroll: true,
-                            child: EmptyStateWidget(
-                              message: _searchQuery.isNotEmpty
-                                  ? 'No loans match your search'
-                                  : 'No loans yet. Add your first loan!',
-                              onPressed: () async {
-                                final result = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const AddLoanScreen()),
-                                );
-
-                                if (result == true && mounted) {
-                                  Provider.of<LoanProvider>(context,
-                                          listen: false)
-                                      .loadLoans();
-                                }
-                              },
+                          return SliverToBoxAdapter(
+                            child: Container(
+                              height: MediaQuery.of(context).size.height - 300, // Adjust this value as needed
+                              alignment: Alignment.center,
+                              child: EmptyStateWidget(
+                                message: _searchQuery.isNotEmpty
+                                    ? 'No loans match your search'
+                                    : 'No loans yet. Add your first loan!',
+                                onPressed: () async {
+                                  final result = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const AddLoanScreen()),
+                                  );
+  
+                                  if (result == true && mounted) {
+                                    Provider.of<LoanProvider>(context,
+                                            listen: false)
+                                        .loadLoans();
+                                  }
+                                },
+                              ),
                             ),
                           );
                         }
