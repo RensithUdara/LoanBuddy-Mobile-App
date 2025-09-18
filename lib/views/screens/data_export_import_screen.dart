@@ -61,7 +61,8 @@ class _DataExportImportScreenState extends State<DataExportImportScreen> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: _resultMessage.contains('Error') || _resultMessage.contains('denied')
+                  color: _resultMessage.contains('Error') ||
+                          _resultMessage.contains('denied')
                       ? Colors.red.withOpacity(0.1)
                       : Colors.green.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
@@ -69,10 +70,12 @@ class _DataExportImportScreenState extends State<DataExportImportScreen> {
                 child: Row(
                   children: [
                     Icon(
-                      _resultMessage.contains('Error') || _resultMessage.contains('denied')
+                      _resultMessage.contains('Error') ||
+                              _resultMessage.contains('denied')
                           ? Icons.error_outline
                           : Icons.check_circle_outline,
-                      color: _resultMessage.contains('Error') || _resultMessage.contains('denied')
+                      color: _resultMessage.contains('Error') ||
+                              _resultMessage.contains('denied')
                           ? Colors.red
                           : Colors.green,
                     ),
@@ -81,7 +84,8 @@ class _DataExportImportScreenState extends State<DataExportImportScreen> {
                       child: Text(
                         _resultMessage,
                         style: TextStyle(
-                          color: _resultMessage.contains('Error') || _resultMessage.contains('denied')
+                          color: _resultMessage.contains('Error') ||
+                                  _resultMessage.contains('denied')
                               ? Colors.red
                               : Colors.green,
                         ),
