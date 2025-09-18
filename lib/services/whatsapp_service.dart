@@ -6,9 +6,9 @@ import '../models/loan_model.dart';
 
 class WhatsAppService {
   static final currencyFormatter = NumberFormat.currency(
-    symbol: '₹',
+    symbol: 'Rs. ',
     decimalDigits: 0,
-    locale: 'en_IN',
+    locale: 'en_LK',
   );
 
   // Send WhatsApp message
