@@ -523,7 +523,7 @@ class CustomLoadingIndicator extends StatelessWidget {
           ),
         ],
       );
-      );
+      )
     }
 
     return Center(
