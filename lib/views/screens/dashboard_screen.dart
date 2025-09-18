@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../controllers/loan_provider.dart';
 import '../../controllers/settings_provider.dart';
+import '../../models/loan_model.dart';
 import '../../utils/app_utils.dart';
 import '../widgets/common_widgets.dart';
-import '../../models/loan_model.dart';
 import 'add_loan_screen.dart';
 import 'loan_details_screen.dart';
 import 'settings_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({Key? key}) : super(key: key);
+  const DashboardScreen({super.key});
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
@@ -42,9 +43,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     setState(() {
       _filter = value;
     });
-    
+
     final loanProvider = Provider.of<LoanProvider>(context, listen: false);
-    
+
     switch (value) {
       case 'active':
         loanProvider.loadActiveLoans();
@@ -70,12 +71,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
       context: context,
       builder: (context) => ConfirmationDialog(
         title: 'Delete Loan',
-        content: 'Are you sure you want to delete this loan? This action cannot be undone.',
+        content:
+            'Are you sure you want to delete this loan? This action cannot be undone.',
         confirmText: 'Delete',
         confirmColor: Colors.red,
         onConfirm: () {
           if (loan.id != null) {
-            final loanProvider = Provider.of<LoanProvider>(context, listen: false);
+            final loanProvider =
+                Provider.of<LoanProvider>(context, listen: false);
             loanProvider.deleteLoan(loan.id!);
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Loan deleted')),
@@ -118,7 +121,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             context,
             MaterialPageRoute(builder: (context) => const AddLoanScreen()),
           );
-          
+
           if (result == true) {
             // Reload loans if a new loan was added
             if (!mounted) return;
@@ -145,7 +148,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     children: [
                       _buildStatItem(
                         'Total Outstanding',
-                        Formatters.currencyFormat.format(loanProvider.totalOutstandingAmount),
+                        Formatters.currencyFormat
+                            .format(loanProvider.totalOutstandingAmount),
                         Colors.blue,
                         Icons.account_balance,
                       ),
@@ -192,7 +196,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _buildStatItem(String label, String value, Color color, IconData icon) {
+  Widget _buildStatItem(
+      String label, String value, Color color, IconData icon) {
     return Column(
       children: [
         Icon(icon, color: color, size: 24),
@@ -280,7 +285,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 context,
                 MaterialPageRoute(builder: (context) => const AddLoanScreen()),
               );
-              
+
               if (result == true && mounted) {
                 Provider.of<LoanProvider>(context, listen: false).loadLoans();
               }
@@ -302,7 +307,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     builder: (context) => LoanDetailsScreen(loanId: loan.id!),
                   ),
                 );
-                
+
                 if (result == true && mounted) {
                   Provider.of<LoanProvider>(context, listen: false).loadLoans();
                 }
