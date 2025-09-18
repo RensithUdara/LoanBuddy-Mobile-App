@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+
 import '../../models/loan_model.dart';
-import '../../utils/app_utils.dart';
 import '../../services/whatsapp_service.dart';
+import '../../utils/app_utils.dart';
 
 class LoanCard extends StatelessWidget {
   final Loan loan;
@@ -9,11 +10,11 @@ class LoanCard extends StatelessWidget {
   final VoidCallback? onDelete;
 
   const LoanCard({
-    Key? key,
+    super.key,
     required this.loan,
     this.onTap,
     this.onDelete,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +23,7 @@ class LoanCard extends StatelessWidget {
 
     return Card(
       margin: const EdgeInsets.symmetric(
-        horizontal: Constants.defaultMargin, 
-        vertical: 8
-      ),
+          horizontal: Constants.defaultMargin, vertical: 8),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(Constants.cardBorderRadius),
@@ -157,7 +156,8 @@ class LoanCard extends StatelessWidget {
                                 // Show message options dialog
                                 showModalBottomSheet(
                                   context: context,
-                                  builder: (context) => MessageOptionsSheet(loan: loan),
+                                  builder: (context) =>
+                                      MessageOptionsSheet(loan: loan),
                                 );
                               },
                             ),
@@ -172,12 +172,12 @@ class LoanCard extends StatelessWidget {
                       : const SizedBox(),
                 ],
               ),
-              if (loan.status == LoanStatus.active) 
+              if (loan.status == LoanStatus.active)
                 LinearProgressIndicator(
                   value: loan.loanAmount > 0
                       ? loan.paidAmount / loan.loanAmount
                       : 0,
-                  backgroundColor: theme.colorScheme.surfaceVariant,
+                  backgroundColor: theme.colorScheme.surfaceContainerHighest,
                   valueColor: AlwaysStoppedAnimation<Color>(
                     loan.paidAmount / loan.loanAmount >= 1
                         ? Colors.green
@@ -196,7 +196,7 @@ class LoanCard extends StatelessWidget {
 class MessageOptionsSheet extends StatelessWidget {
   final Loan loan;
 
-  const MessageOptionsSheet({Key? key, required this.loan}) : super(key: key);
+  const MessageOptionsSheet({super.key, required this.loan});
 
   @override
   Widget build(BuildContext context) {
@@ -256,12 +256,12 @@ class EmptyStateWidget extends StatelessWidget {
   final VoidCallback? onPressed;
 
   const EmptyStateWidget({
-    Key? key,
+    super.key,
     required this.message,
     this.icon = Icons.info_outline,
     this.buttonText = 'Add New Loan',
     this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -302,9 +302,9 @@ class CustomLoadingIndicator extends StatelessWidget {
   final String message;
 
   const CustomLoadingIndicator({
-    Key? key,
+    super.key,
     this.message = 'Loading...',
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -330,14 +330,14 @@ class ConfirmationDialog extends StatelessWidget {
   final Color? confirmColor;
 
   const ConfirmationDialog({
-    Key? key,
+    super.key,
     required this.title,
     required this.content,
     this.confirmText = 'Confirm',
     this.cancelText = 'Cancel',
     required this.onConfirm,
     this.confirmColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
