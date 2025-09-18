@@ -35,13 +35,14 @@ class Loan {
   double get remainingAmount => loanAmount - paidAmount;
 
   // Check if loan is overdue
-  bool get isOverdue => status == LoanStatus.active && dueDate.isBefore(DateTime.now());
+  bool get isOverdue =>
+      status == LoanStatus.active && dueDate.isBefore(DateTime.now());
 
   // Add a payment to the loan
   void addPayment(double amount) {
     paidAmount += amount;
     updatedAt = DateTime.now();
-    
+
     // If fully paid, mark as completed
     if (paidAmount >= loanAmount) {
       status = LoanStatus.completed;
