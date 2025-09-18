@@ -10,6 +10,7 @@ class LoanCard extends StatelessWidget {
   final VoidCallback? onTap;
   final VoidCallback? onDelete;
 
+  // Removed const constructor since we calculate derived values in build
   const LoanCard({
     super.key,
     required this.loan,
@@ -19,8 +20,7 @@ class LoanCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context      );
-    }
+    final theme = Theme.of(context);
     final isOverdue = loan.isOverdue;
 
     // Status colors
@@ -34,17 +34,17 @@ class LoanCard extends StatelessWidget {
         loan.loanAmount > 0 ? loan.paidAmount / loan.loanAmount : 0.0;
 
     return Card(
-      margin = const EdgeInsets.symmetric(
+      margin: const EdgeInsets.symmetric(
           horizontal: Constants.defaultMargin, vertical: 8),
-      elevation = 3,
-      shape = RoundedRectangleBorder(
+      elevation: 3,
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(
           color: theme.colorScheme.outlineVariant.withOpacity(0.2),
           width: 1,
         ),
       ),
-      child = InkWell(
+      child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(16),
         child: Padding(
