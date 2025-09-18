@@ -11,7 +11,7 @@ class LoanCard extends StatelessWidget {
   final VoidCallback? onDelete;
 
   // Removed const constructor since we calculate derived values in build
-  LoanCard({
+  const LoanCard({
     super.key,
     required this.loan,
     this.onTap,
