@@ -1,5 +1,6 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+
 import '../models/loan_model.dart';
 import '../models/payment_model.dart';
 
@@ -62,7 +63,7 @@ class DatabaseHelper {
   }
 
   // CRUD Operations for Loans
-  
+
   // Insert a new loan
   Future<int> insertLoan(Loan loan) async {
     Database db = await database;
@@ -72,9 +73,9 @@ class DatabaseHelper {
   // Get all loans
   Future<List<Loan>> getLoans({String? status}) async {
     Database db = await database;
-    
+
     List<Map<String, dynamic>> maps;
-    
+
     if (status != null) {
       maps = await db.query(
         'loans',
@@ -85,7 +86,7 @@ class DatabaseHelper {
     } else {
       maps = await db.query('loans', orderBy: 'due_date ASC');
     }
-    
+
     return List.generate(maps.length, (i) {
       return Loan.fromMap(maps[i]);
     });
@@ -120,14 +121,14 @@ class DatabaseHelper {
   // Delete loan
   Future<int> deleteLoan(int id) async {
     Database db = await database;
-    
+
     // Delete associated payments first
     await db.delete(
       'payments',
       where: 'loan_id = ?',
       whereArgs: [id],
     );
-    
+
     // Then delete the loan
     return await db.delete(
       'loans',
@@ -161,12 +162,12 @@ class DatabaseHelper {
   // Insert a new payment
   Future<int> insertPayment(Payment payment) async {
     Database db = await database;
-    
+
     // Begin a transaction
     return await db.transaction((txn) async {
       // Insert the payment
       int paymentId = await txn.insert('payments', payment.toMap());
-      
+
       // Update the loan's paid amount
       await txn.rawUpdate('''
         UPDATE loans 
@@ -185,7 +186,7 @@ class DatabaseHelper {
         LoanStatus.completed.name,
         payment.loanId
       ]);
-      
+
       return paymentId;
     });
   }
@@ -208,7 +209,7 @@ class DatabaseHelper {
   // Delete payment
   Future<int> deletePayment(int id, int loanId, double amount) async {
     Database db = await database;
-    
+
     // Begin a transaction
     return await db.transaction((txn) async {
       // Delete the payment
@@ -217,7 +218,7 @@ class DatabaseHelper {
         where: 'id = ?',
         whereArgs: [id],
       );
-      
+
       // Update the loan's paid amount
       await txn.rawUpdate('''
         UPDATE loans 
@@ -225,13 +226,8 @@ class DatabaseHelper {
             updated_at = ?,
             status = ? 
         WHERE id = ?
-      ''', [
-        amount,
-        DateTime.now().toString(),
-        LoanStatus.active.name,
-        loanId
-      ]);
-      
+      ''', [amount, DateTime.now().toString(), LoanStatus.active.name, loanId]);
+
       return result;
     });
   }
