@@ -4,15 +4,16 @@ import 'package:provider/provider.dart';
 import 'controllers/loan_provider.dart';
 import 'controllers/payment_provider.dart';
 import 'controllers/settings_provider.dart';
-import 'services/simple_notification_service.dart';
+// Commented out to fix build error
+// import 'services/simple_notification_service.dart';
 import 'utils/app_utils.dart';
 import 'views/screens/dashboard_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize notifications
-  await SimpleNotificationService.initialize();
+  // Notification service commented out as it's not needed at this stage
+  // await SimpleNotificationService.initialize();
 
   runApp(const MyApp());
 }
