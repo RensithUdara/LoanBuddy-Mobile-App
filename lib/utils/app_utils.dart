@@ -3,12 +3,12 @@ import 'package:intl/intl.dart';
 
 class AppTheme {
   // Color constants
-  static const Color primaryColor = Color(0xFF2962FF);  // More vibrant blue
+  static const Color primaryColor = Color(0xFF2962FF); // More vibrant blue
   static const Color secondaryColor = Color(0xFF00C853); // More vibrant green
-  static const Color errorColor = Color(0xFFFF3D00);    // More vibrant red
-  static const Color warningColor = Color(0xFFFFAB00);  // More vibrant amber
-  static const Color accentColor = Color(0xFF6200EA);   // Purple accent
-  static const Color infoColor = Color(0xFF00B0FF);     // Light blue for info
+  static const Color errorColor = Color(0xFFFF3D00); // More vibrant red
+  static const Color warningColor = Color(0xFFFFAB00); // More vibrant amber
+  static const Color accentColor = Color(0xFF6200EA); // Purple accent
+  static const Color infoColor = Color(0xFF00B0FF); // Light blue for info
 
   // Light theme
   static ThemeData lightTheme = ThemeData(
