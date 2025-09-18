@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../controllers/loan_provider.dart';
-import '../../controllers/settings_provider.dart';
 import '../../models/loan_model.dart';
 import '../../utils/app_utils.dart';
 import '../widgets/common_widgets.dart';
@@ -137,7 +136,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Consumer<LoanProvider>(
       builder: (context, loanProvider, _) {
         final theme = Theme.of(context);
-        
+
         return Container(
           padding: const EdgeInsets.all(Constants.defaultPadding),
           child: Column(
@@ -158,7 +157,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     flex: 3,
                     child: _buildGradientCard(
                       title: 'Total Outstanding',
-                      value: Formatters.currencyFormat.format(loanProvider.totalOutstandingAmount),
+                      value: Formatters.currencyFormat
+                          .format(loanProvider.totalOutstandingAmount),
                       icon: Icons.account_balance,
                       gradient: const LinearGradient(
                         colors: [Color(0xFF1A73E8), Color(0xFF6C92F4)],
@@ -189,7 +189,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Expanded(
                     child: _buildStatusCard(
                       title: 'Active',
-                      value: '${loanProvider.loans.where((loan) => loan.status == LoanStatus.active).length}',
+                      value:
+                          '${loanProvider.loans.where((loan) => loan.status == LoanStatus.active).length}',
                       icon: Icons.hourglass_bottom,
                       color: const Color(0xFFFFA726),
                       theme: theme,
@@ -199,7 +200,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Expanded(
                     child: _buildStatusCard(
                       title: 'Overdue',
-                      value: '${loanProvider.loans.where((loan) => loan.status == LoanStatus.active && loan.isOverdue).length}',
+                      value:
+                          '${loanProvider.loans.where((loan) => loan.status == LoanStatus.active && loan.isOverdue).length}',
                       icon: Icons.warning_amber_outlined,
                       color: const Color(0xFFE53935),
                       theme: theme,
@@ -209,7 +211,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Expanded(
                     child: _buildStatusCard(
                       title: 'Completed',
-                      value: '${loanProvider.loans.where((loan) => loan.status == LoanStatus.completed).length}',
+                      value:
+                          '${loanProvider.loans.where((loan) => loan.status == LoanStatus.completed).length}',
                       icon: Icons.check_circle_outline,
                       color: const Color(0xFF43A047),
                       theme: theme,
@@ -279,7 +282,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final cardColor = brightness == Brightness.light
         ? color.withOpacity(0.12)
         : color.withOpacity(0.24);
-    
+
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
