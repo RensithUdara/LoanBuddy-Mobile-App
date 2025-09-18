@@ -19,7 +19,8 @@ class LoanCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = Theme.of(context      );
+    }
     final isOverdue = loan.isOverdue;
 
     // Status colors
@@ -523,7 +524,6 @@ class CustomLoadingIndicator extends StatelessWidget {
           ),
         ],
       );
-      )
     }
 
     return Center(
