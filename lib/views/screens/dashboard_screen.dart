@@ -88,12 +88,42 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
+  int _selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('LoanBuddy'),
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primaryContainer,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.monetization_on,
+                color: theme.colorScheme.primary,
+                size: 24,
+              ),
+            ),
+            const SizedBox(width: 12),
+            const Text('LoanBuddy'),
+          ],
+        ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications_outlined),
+            onPressed: () {
+              // Notification functionality could be added here
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('No new notifications')),
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
@@ -114,7 +144,48 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _selectedIndex,
+        onDestinationSelected: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+
+          // This could be expanded to handle navigation between different screens
+          if (index == 1) {
+            // Reports screen (placeholder)
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Reports feature coming soon')),
+            );
+            setState(() => _selectedIndex = 0);
+          } else if (index == 2) {
+            // Profile screen (placeholder for settings)
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SettingsScreen()),
+            );
+            setState(() => _selectedIndex = 0);
+          }
+        },
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.bar_chart_outlined),
+            selectedIcon: Icon(Icons.bar_chart),
+            label: 'Reports',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.person_outline),
+            selectedIcon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           final result = await Navigator.push(
             context,
@@ -127,7 +198,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Provider.of<LoanProvider>(context, listen: false).loadLoans();
           }
         },
-        child: const Icon(Icons.add),
+        label: const Text('Add Loan'),
+        icon: const Icon(Icons.add),
       ),
     );
   }
