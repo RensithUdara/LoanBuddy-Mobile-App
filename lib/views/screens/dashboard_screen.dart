@@ -468,7 +468,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Consumer<LoanProvider>(
       builder: (context, loanProvider, _) {
         if (loanProvider.isLoading) {
-          return const CustomLoadingIndicator();
+          return const CustomLoadingIndicator(useShimmer: true);
         }
 
         final filteredLoans = _searchQuery.isEmpty
