@@ -5,7 +5,6 @@ import '../../controllers/loan_provider.dart';
 import '../../models/loan_model.dart';
 import '../../utils/app_utils.dart';
 import '../widgets/common_widgets.dart';
-import '../widgets/shimmer_effects.dart';
 import 'add_loan_screen.dart';
 import 'loan_details_screen.dart';
 import 'settings_screen.dart';
@@ -17,7 +16,8 @@ class DashboardScreen extends StatefulWidget {
   State<DashboardScreen> createState() => _DashboardScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen> with TickerProviderStateMixin {
+class _DashboardScreenState extends State<DashboardScreen>
+    with TickerProviderStateMixin {
   String _filter = 'all';
   String _searchQuery = '';
   final TextEditingController _searchController = TextEditingController();
@@ -39,14 +39,14 @@ class _DashboardScreenState extends State<DashboardScreen> with TickerProviderSt
       vsync: this,
       duration: const Duration(milliseconds: 800),
     );
-    
+
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _animationController,
         curve: Curves.easeInOut,
       ),
     );
-    
+
     _animationController.forward();
   }
 
@@ -113,7 +113,7 @@ class _DashboardScreenState extends State<DashboardScreen> with TickerProviderSt
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
     final bool isDarkMode = theme.brightness == Brightness.dark;
-    
+
     return Scaffold(
       body: SafeArea(
         child: NestedScrollView(
@@ -130,12 +130,12 @@ class _DashboardScreenState extends State<DashboardScreen> with TickerProviderSt
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                          isDarkMode 
-                            ? const Color(0xFF1E3A5F) 
-                            : const Color(0xFF2196F3).withOpacity(0.8),
-                          isDarkMode 
-                            ? const Color(0xFF0D2137) 
-                            : const Color(0xFF1565C0),
+                          isDarkMode
+                              ? const Color(0xFF1E3A5F)
+                              : const Color(0xFF2196F3).withOpacity(0.8),
+                          isDarkMode
+                              ? const Color(0xFF0D2137)
+                              : const Color(0xFF1565C0),
                         ],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
@@ -214,10 +214,13 @@ class _DashboardScreenState extends State<DashboardScreen> with TickerProviderSt
                               CircleAvatar(
                                 backgroundColor: Colors.white.withOpacity(0.2),
                                 child: IconButton(
-                                  icon: const Icon(Icons.notifications_outlined, color: Colors.white),
+                                  icon: const Icon(Icons.notifications_outlined,
+                                      color: Colors.white),
                                   onPressed: () {
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(content: Text('No new notifications')),
+                                      const SnackBar(
+                                          content:
+                                              Text('No new notifications')),
                                     );
                                   },
                                 ),
@@ -226,11 +229,14 @@ class _DashboardScreenState extends State<DashboardScreen> with TickerProviderSt
                               CircleAvatar(
                                 backgroundColor: Colors.white.withOpacity(0.2),
                                 child: IconButton(
-                                  icon: const Icon(Icons.settings, color: Colors.white),
+                                  icon: const Icon(Icons.settings,
+                                      color: Colors.white),
                                   onPressed: () {
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SettingsScreen()),
                                     );
                                   },
                                 ),
@@ -248,7 +254,8 @@ class _DashboardScreenState extends State<DashboardScreen> with TickerProviderSt
           },
           body: RefreshIndicator(
             onRefresh: () async {
-              final loanProvider = Provider.of<LoanProvider>(context, listen: false);
+              final loanProvider =
+                  Provider.of<LoanProvider>(context, listen: false);
               await loanProvider.loadLoans();
             },
             child: FadeTransition(
@@ -264,7 +271,7 @@ class _DashboardScreenState extends State<DashboardScreen> with TickerProviderSt
                   SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: Constants.defaultPadding, 
+                        horizontal: Constants.defaultPadding,
                         vertical: 8,
                       ),
                       child: Row(
@@ -313,11 +320,15 @@ class _DashboardScreenState extends State<DashboardScreen> with TickerProviderSt
                               onPressed: () async {
                                 final result = await Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => const AddLoanScreen()),
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const AddLoanScreen()),
                                 );
 
                                 if (result == true && mounted) {
-                                  Provider.of<LoanProvider>(context, listen: false).loadLoans();
+                                  Provider.of<LoanProvider>(context,
+                                          listen: false)
+                                      .loadLoans();
                                 }
                               },
                             ),
@@ -334,15 +345,19 @@ class _DashboardScreenState extends State<DashboardScreen> with TickerProviderSt
                                   final result = await Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => LoanDetailsScreen(loanId: loan.id!),
+                                      builder: (context) =>
+                                          LoanDetailsScreen(loanId: loan.id!),
                                     ),
                                   );
 
                                   if (result == true && mounted) {
-                                    Provider.of<LoanProvider>(context, listen: false).loadLoans();
+                                    Provider.of<LoanProvider>(context,
+                                            listen: false)
+                                        .loadLoans();
                                   }
                                 },
-                                onDelete: () => _showDeleteConfirmation(context, loan),
+                                onDelete: () =>
+                                    _showDeleteConfirmation(context, loan),
                               );
                             },
                             childCount: filteredLoans.length,
@@ -366,19 +381,17 @@ class _DashboardScreenState extends State<DashboardScreen> with TickerProviderSt
           selectedIndex: _selectedIndex,
           elevation: 8,
           height: 72,
-          backgroundColor: isDarkMode 
-            ? const Color(0xFF1E1E1E) 
-            : Colors.white,
-          indicatorColor: isDarkMode 
-            ? theme.colorScheme.primaryContainer 
-            : theme.colorScheme.primaryContainer.withOpacity(0.3),
+          backgroundColor: isDarkMode ? const Color(0xFF1E1E1E) : Colors.white,
+          indicatorColor: isDarkMode
+              ? theme.colorScheme.primaryContainer
+              : theme.colorScheme.primaryContainer.withOpacity(0.3),
           shadowColor: theme.shadowColor,
           surfaceTintColor: Colors.transparent,
           onDestinationSelected: (index) {
             setState(() {
               _selectedIndex = index;
             });
-            
+
             // This could be expanded to handle navigation between different screens
             if (index == 1) {
               // Reports screen (placeholder)
@@ -399,26 +412,29 @@ class _DashboardScreenState extends State<DashboardScreen> with TickerProviderSt
           destinations: [
             NavigationDestination(
               icon: Icon(
-                Icons.home_outlined, 
+                Icons.home_outlined,
                 color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
               ),
-              selectedIcon: const Icon(Icons.home, color: AppTheme.primaryColor),
+              selectedIcon:
+                  const Icon(Icons.home, color: AppTheme.primaryColor),
               label: 'Home',
             ),
             NavigationDestination(
               icon: Icon(
-                Icons.bar_chart_outlined, 
+                Icons.bar_chart_outlined,
                 color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
               ),
-              selectedIcon: const Icon(Icons.bar_chart, color: AppTheme.primaryColor),
+              selectedIcon:
+                  const Icon(Icons.bar_chart, color: AppTheme.primaryColor),
               label: 'Reports',
             ),
             NavigationDestination(
               icon: Icon(
-                Icons.person_outline, 
+                Icons.person_outline,
                 color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
               ),
-              selectedIcon: const Icon(Icons.person, color: AppTheme.primaryColor),
+              selectedIcon:
+                  const Icon(Icons.person, color: AppTheme.primaryColor),
               label: 'Profile',
             ),
           ],
