@@ -7,7 +7,7 @@ import 'controllers/settings_provider.dart';
 // Commented out to fix build error
 // import 'services/simple_notification_service.dart';
 import 'utils/app_utils.dart';
-import 'views/screens/dashboard_screen.dart';
+import 'views/screens/new_dashboard_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
