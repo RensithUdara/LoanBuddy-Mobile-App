@@ -53,6 +53,17 @@ dependencies:
   # Local Storage
   shared_preferences: ^2.3.0
   
+  # File Operations
+  path_provider: ^2.1.2
+  file_picker: ^6.1.1
+  permission_handler: ^11.3.0
+  
+  # Data Format
+  csv: ^5.1.1
+  
+  # Charts for Analytics
+  fl_chart: ^0.66.2
+  
   # Notifications - Commented out to fix build error
   # flutter_local_notifications: 10.0.0
 
