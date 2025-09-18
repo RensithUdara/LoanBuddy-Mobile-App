@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
 import '../../controllers/loan_provider.dart';
 import '../../controllers/payment_provider.dart';
 import '../../models/loan_model.dart';
 import '../../models/payment_model.dart';
 import '../../utils/app_utils.dart';
-import '../../services/whatsapp_service.dart';
 import '../widgets/common_widgets.dart';
 
 class LoanDetailsScreen extends StatefulWidget {
   final int loanId;
-  
+
   const LoanDetailsScreen({
-    Key? key, 
+    super.key,
     required this.loanId,
-  }) : super(key: key);
+  });
 
   @override
   State<LoanDetailsScreen> createState() => _LoanDetailsScreenState();
@@ -49,15 +49,16 @@ class _LoanDetailsScreenState extends State<LoanDetailsScreen> {
     try {
       final loanProvider = Provider.of<LoanProvider>(context, listen: false);
       final loan = await loanProvider.getLoan(widget.loanId);
-      
+
       if (loan != null) {
         setState(() {
           _loan = loan;
           _isLoading = false;
         });
-        
+
         // Load payment history for this loan
-        final paymentProvider = Provider.of<PaymentProvider>(context, listen: false);
+        final paymentProvider =
+            Provider.of<PaymentProvider>(context, listen: false);
         await paymentProvider.loadPaymentsForLoan(widget.loanId);
       } else {
         if (!mounted) return;
@@ -77,7 +78,7 @@ class _LoanDetailsScreenState extends State<LoanDetailsScreen> {
 
   void _showAddPaymentModal() {
     if (_loan == null) return;
-    
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -160,17 +161,20 @@ class _LoanDetailsScreenState extends State<LoanDetailsScreen> {
                 onPressed: () async {
                   if (_paymentAmountController.text.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Please enter payment amount')),
+                      const SnackBar(
+                          content: Text('Please enter payment amount')),
                     );
                     return;
                   }
 
                   try {
-                    final amount = double.parse(_paymentAmountController.text.replaceAll(RegExp(r'[^\d.]'), ''));
-                    
+                    final amount = double.parse(_paymentAmountController.text
+                        .replaceAll(RegExp(r'[^\d.]'), ''));
+
                     if (amount <= 0) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Amount must be greater than zero')),
+                        const SnackBar(
+                            content: Text('Amount must be greater than zero')),
                       );
                       return;
                     }
@@ -179,10 +183,13 @@ class _LoanDetailsScreenState extends State<LoanDetailsScreen> {
                       loanId: widget.loanId,
                       paymentAmount: amount,
                       paymentDate: _paymentDate,
-                      notes: _paymentNotesController.text.isNotEmpty ? _paymentNotesController.text : null,
+                      notes: _paymentNotesController.text.isNotEmpty
+                          ? _paymentNotesController.text
+                          : null,
                     );
 
-                    final paymentProvider = Provider.of<PaymentProvider>(context, listen: false);
+                    final paymentProvider =
+                        Provider.of<PaymentProvider>(context, listen: false);
                     final result = await paymentProvider.addPayment(payment);
 
                     if (result) {
@@ -217,19 +224,21 @@ class _LoanDetailsScreenState extends State<LoanDetailsScreen> {
 
   void _showDeleteConfirmation() {
     if (_loan == null) return;
-    
+
     showDialog(
       context: context,
       builder: (context) => ConfirmationDialog(
         title: 'Delete Loan',
-        content: 'Are you sure you want to delete this loan? All payment history will also be deleted. This action cannot be undone.',
+        content:
+            'Are you sure you want to delete this loan? All payment history will also be deleted. This action cannot be undone.',
         confirmText: 'Delete',
         confirmColor: Colors.red,
         onConfirm: () async {
           if (_loan?.id != null) {
-            final loanProvider = Provider.of<LoanProvider>(context, listen: false);
+            final loanProvider =
+                Provider.of<LoanProvider>(context, listen: false);
             final result = await loanProvider.deleteLoan(_loan!.id!);
-            
+
             if (result) {
               if (!mounted) return;
               Navigator.pop(context, true);
@@ -250,7 +259,7 @@ class _LoanDetailsScreenState extends State<LoanDetailsScreen> {
 
   void _showSendMessageOptions() {
     if (_loan == null) return;
-    
+
     showModalBottomSheet(
       context: context,
       builder: (context) => MessageOptionsSheet(loan: _loan!),
@@ -262,18 +271,20 @@ class _LoanDetailsScreenState extends State<LoanDetailsScreen> {
       context: context,
       builder: (context) => ConfirmationDialog(
         title: 'Delete Payment',
-        content: 'Are you sure you want to delete this payment? This action cannot be undone.',
+        content:
+            'Are you sure you want to delete this payment? This action cannot be undone.',
         confirmText: 'Delete',
         confirmColor: Colors.red,
         onConfirm: () async {
           if (payment.id != null) {
-            final paymentProvider = Provider.of<PaymentProvider>(context, listen: false);
+            final paymentProvider =
+                Provider.of<PaymentProvider>(context, listen: false);
             final result = await paymentProvider.deletePayment(
               payment.id!,
               payment.loanId,
               payment.paymentAmount,
             );
-            
+
             if (result) {
               _loadLoanDetails();
             } else {
@@ -329,7 +340,8 @@ class _LoanDetailsScreenState extends State<LoanDetailsScreen> {
               children: [
                 Icon(Icons.history),
                 SizedBox(width: 8),
-                Text('Payment History', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text('Payment History',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
               ],
             ),
           ),
@@ -350,7 +362,7 @@ class _LoanDetailsScreenState extends State<LoanDetailsScreen> {
   Widget _buildLoanDetailsCard() {
     final theme = Theme.of(context);
     final isOverdue = _loan!.isOverdue;
-    
+
     return Card(
       margin: const EdgeInsets.all(Constants.defaultMargin),
       child: Padding(
@@ -405,22 +417,36 @@ class _LoanDetailsScreenState extends State<LoanDetailsScreen> {
               ],
             ),
             const Divider(),
-            _buildDetailRow('Phone', Formatters.formatPhoneNumber(_loan!.whatsappNumber), Icons.phone_android),
-            _buildDetailRow('Remaining', Formatters.currencyFormat.format(_loan!.remainingAmount), Icons.account_balance_wallet),
-            _buildDetailRow('Paid', Formatters.currencyFormat.format(_loan!.paidAmount), Icons.payments),
-            _buildDetailRow('Loan Date', Formatters.dateFormat.format(_loan!.loanDate), Icons.calendar_today),
             _buildDetailRow(
-              'Due Date', 
+                'Phone',
+                Formatters.formatPhoneNumber(_loan!.whatsappNumber),
+                Icons.phone_android),
+            _buildDetailRow(
+                'Remaining',
+                Formatters.currencyFormat.format(_loan!.remainingAmount),
+                Icons.account_balance_wallet),
+            _buildDetailRow(
+                'Paid',
+                Formatters.currencyFormat.format(_loan!.paidAmount),
+                Icons.payments),
+            _buildDetailRow(
+                'Loan Date',
+                Formatters.dateFormat.format(_loan!.loanDate),
+                Icons.calendar_today),
+            _buildDetailRow(
+              'Due Date',
               Formatters.dateFormat.format(_loan!.dueDate),
               Icons.event,
-              isOverdue && _loan!.status == LoanStatus.active ? Colors.red : null,
+              isOverdue && _loan!.status == LoanStatus.active
+                  ? Colors.red
+                  : null,
             ),
             const SizedBox(height: 16),
             LinearProgressIndicator(
               value: _loan!.loanAmount > 0
                   ? _loan!.paidAmount / _loan!.loanAmount
                   : 0,
-              backgroundColor: theme.colorScheme.surfaceVariant,
+              backgroundColor: theme.colorScheme.surfaceContainerHighest,
               valueColor: AlwaysStoppedAnimation<Color>(
                 _loan!.paidAmount / _loan!.loanAmount >= 1
                     ? Colors.green
@@ -439,9 +465,10 @@ class _LoanDetailsScreenState extends State<LoanDetailsScreen> {
     );
   }
 
-  Widget _buildDetailRow(String label, String value, IconData icon, [Color? valueColor]) {
+  Widget _buildDetailRow(String label, String value, IconData icon,
+      [Color? valueColor]) {
     final theme = Theme.of(context);
-    
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
@@ -470,7 +497,7 @@ class _LoanDetailsScreenState extends State<LoanDetailsScreen> {
         }
 
         final payments = paymentProvider.payments;
-        
+
         if (payments.isEmpty) {
           return const EmptyStateWidget(
             message: 'No payment history yet',
@@ -488,10 +515,12 @@ class _LoanDetailsScreenState extends State<LoanDetailsScreen> {
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               child: ListTile(
                 leading: CircleAvatar(
-                  backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                  backgroundColor:
+                      Theme.of(context).colorScheme.primary.withOpacity(0.1),
                   child: const Icon(Icons.payment),
                 ),
-                title: Text(Formatters.currencyFormat.format(payment.paymentAmount)),
+                title: Text(
+                    Formatters.currencyFormat.format(payment.paymentAmount)),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
