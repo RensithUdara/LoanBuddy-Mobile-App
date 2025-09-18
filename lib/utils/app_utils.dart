@@ -20,12 +20,12 @@ class AppTheme {
       surfaceContainerHighest: const Color(0xFFEEEEEE),
       surfaceContainerLow: const Color(0xFFF5F5F5),
     ),
-    appBarTheme: AppBarTheme(
+    appBarTheme: const AppBarTheme(
       centerTitle: true,
       elevation: 0,
       backgroundColor: Colors.white,
       foregroundColor: primaryColor,
-      titleTextStyle: const TextStyle(
+      titleTextStyle: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.bold,
         color: primaryColor,
@@ -50,7 +50,7 @@ class AppTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
-        side: BorderSide(color: primaryColor),
+        side: const BorderSide(color: primaryColor),
         foregroundColor: primaryColor,
       ),
     ),
@@ -81,7 +81,7 @@ class AppTheme {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: primaryColor, width: 2),
+        borderSide: const BorderSide(color: primaryColor, width: 2),
       ),
       filled: true,
       fillColor: Colors.grey.shade50,
