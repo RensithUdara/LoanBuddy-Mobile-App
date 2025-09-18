@@ -35,7 +35,7 @@ class PatchedNotificationService {
     required String body,
   }) async {
     // Avoid using BigPictureStyle which causes the ambiguous reference error
-    final AndroidNotificationDetails androidPlatformChannelSpecifics =
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
       'loanbuddy_channel',
       'Loan Buddy Notifications',
@@ -44,7 +44,7 @@ class PatchedNotificationService {
       priority: Priority.high,
       playSound: true,
       // Avoid using styles that might invoke the problematic BigPictureStyle.bigLargeIcon
-      styleInformation: const DefaultStyleInformation(true, true),
+      styleInformation: DefaultStyleInformation(true, true),
     );
 
     const DarwinNotificationDetails iOSPlatformChannelSpecifics =
@@ -54,7 +54,7 @@ class PatchedNotificationService {
       presentSound: true,
     );
 
-    final NotificationDetails platformChannelSpecifics = NotificationDetails(
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
       iOS: iOSPlatformChannelSpecifics,
     );
