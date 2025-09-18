@@ -20,18 +20,17 @@ class LoanCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isOverdue = loan.isOverdue;
-    
+
     // Status colors
     final statusColor = loan.status == LoanStatus.completed
         ? const Color(0xFF43A047) // Green
         : isOverdue
             ? const Color(0xFFE53935) // Red
             : const Color(0xFF1A73E8); // Blue
-    
-    final progressPercent = loan.loanAmount > 0
-        ? loan.paidAmount / loan.loanAmount
-        : 0.0;
-            
+
+    final progressPercent =
+        loan.loanAmount > 0 ? loan.paidAmount / loan.loanAmount : 0.0;
+
     return Card(
       margin: const EdgeInsets.symmetric(
           horizontal: Constants.defaultMargin, vertical: 8),
@@ -62,7 +61,7 @@ class LoanCard extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        loan.borrowerName.isNotEmpty 
+                        loan.borrowerName.isNotEmpty
                             ? loan.borrowerName[0].toUpperCase()
                             : '?',
                         style: TextStyle(
@@ -89,7 +88,9 @@ class LoanCard extends StatelessWidget {
                         const SizedBox(height: 4),
                         Row(
                           children: [
-                            Icon(Icons.smartphone, size: 14, color: theme.colorScheme.onSurfaceVariant),
+                            Icon(Icons.smartphone,
+                                size: 14,
+                                color: theme.colorScheme.onSurfaceVariant),
                             const SizedBox(width: 4),
                             Text(
                               Formatters.formatPhoneNumber(loan.whatsappNumber),
@@ -203,7 +204,8 @@ class LoanCard extends StatelessWidget {
                           children: [
                             Container(
                               decoration: BoxDecoration(
-                                color: theme.colorScheme.primaryContainer.withOpacity(0.7),
+                                color: theme.colorScheme.primaryContainer
+                                    .withOpacity(0.7),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: IconButton(
@@ -233,7 +235,8 @@ class LoanCard extends StatelessWidget {
                             if (onDelete != null)
                               Container(
                                 decoration: BoxDecoration(
-                                  color: theme.colorScheme.errorContainer.withOpacity(0.7),
+                                  color: theme.colorScheme.errorContainer
+                                      .withOpacity(0.7),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: IconButton(
@@ -269,7 +272,7 @@ class LoanCard extends StatelessWidget {
                           '${(progressPercent * 100).toStringAsFixed(0)}%',
                           style: theme.textTheme.bodySmall?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: progressPercent >= 1 
+                            color: progressPercent >= 1
                                 ? const Color(0xFF43A047)
                                 : theme.colorScheme.primary,
                           ),
@@ -281,7 +284,8 @@ class LoanCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(4),
                       child: LinearProgressIndicator(
                         value: progressPercent,
-                        backgroundColor: theme.colorScheme.surfaceContainerHighest,
+                        backgroundColor:
+                            theme.colorScheme.surfaceContainerHighest,
                         valueColor: AlwaysStoppedAnimation<Color>(
                           progressPercent >= 1
                               ? const Color(0xFF43A047)
@@ -298,7 +302,7 @@ class LoanCard extends StatelessWidget {
       ),
     );
   }
-  
+
   Widget _buildAmountInfo(
     BuildContext context, {
     required String label,
@@ -311,16 +315,16 @@ class LoanCard extends StatelessWidget {
         Text(
           label,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-          ),
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
         ),
         const SizedBox(height: 4),
         Text(
           Formatters.currencyFormat.format(amount),
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: color,
-          ),
+                fontWeight: FontWeight.bold,
+                color: color,
+              ),
         ),
       ],
     );
