@@ -1,6 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-/// This class completely avoids using any notification styles that might 
+/// This class completely avoids using any notification styles that might
 /// trigger the problematic bigLargeIcon method in the Android implementation.
 class SimpleNotificationService {
   static final FlutterLocalNotificationsPlugin
