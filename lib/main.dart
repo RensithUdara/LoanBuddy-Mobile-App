@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'controllers/loan_provider.dart';
 import 'controllers/payment_provider.dart';
 import 'controllers/settings_provider.dart';
-import 'services/patched_notification_service.dart';
+import 'services/simple_notification_service.dart';
 import 'utils/app_utils.dart';
 import 'views/screens/dashboard_screen.dart';
 
@@ -12,7 +12,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize notifications
-  await PatchedNotificationService.initialize();
+  await SimpleNotificationService.initialize();
 
   runApp(const MyApp());
 }
