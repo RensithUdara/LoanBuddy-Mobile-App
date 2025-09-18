@@ -304,9 +304,11 @@ class _DashboardScreenState extends State<DashboardScreen>
                         if (loanProvider.isLoading) {
                           return SliverToBoxAdapter(
                             child: Container(
-                              height: MediaQuery.of(context).size.height - 300, // Adjust this value as needed
+                              height: MediaQuery.of(context).size.height -
+                                  300, // Adjust this value as needed
                               alignment: Alignment.center,
-                              child: const CustomLoadingIndicator(useShimmer: true),
+                              child: const CustomLoadingIndicator(
+                                  useShimmer: true),
                             ),
                           );
                         }
@@ -318,7 +320,8 @@ class _DashboardScreenState extends State<DashboardScreen>
                         if (filteredLoans.isEmpty) {
                           return SliverToBoxAdapter(
                             child: Container(
-                              height: MediaQuery.of(context).size.height - 300, // Adjust this value as needed
+                              height: MediaQuery.of(context).size.height -
+                                  300, // Adjust this value as needed
                               alignment: Alignment.center,
                               child: EmptyStateWidget(
                                 message: _searchQuery.isNotEmpty
@@ -331,7 +334,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                         builder: (context) =>
                                             const AddLoanScreen()),
                                   );
-  
+
                                   if (result == true && mounted) {
                                     Provider.of<LoanProvider>(context,
                                             listen: false)
