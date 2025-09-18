@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../models/payment_model.dart';
 import '../services/database_helper.dart';
 import 'loan_provider.dart';
@@ -51,14 +52,14 @@ class PaymentProvider extends ChangeNotifier {
           notes: payment.notes,
         );
         _payments.insert(0, newPayment);
-        
+
         // Refresh the loan to update its paid amount
         final loan = await _loanProvider.getLoan(payment.loanId);
         if (loan != null) {
           // Update the loan in the loan provider
           await _loanProvider.loadLoans();
         }
-        
+
         _isLoading = false;
         notifyListeners();
         return true;
@@ -81,10 +82,10 @@ class PaymentProvider extends ChangeNotifier {
       final result = await _dbHelper.deletePayment(paymentId, loanId, amount);
       if (result > 0) {
         _payments.removeWhere((payment) => payment.id == paymentId);
-        
+
         // Refresh the loan to update its paid amount
         await _loanProvider.loadLoans();
-        
+
         _isLoading = false;
         notifyListeners();
         return true;
