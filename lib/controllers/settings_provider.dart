@@ -63,12 +63,12 @@ class SettingsProvider extends ChangeNotifier {
     _currency = '₹';
     _useNotifications = true;
     _reminderTime = '10:00';
-    
+
     await _prefs?.setBool('isDarkMode', false);
     await _prefs?.setString('currency', '₹');
     await _prefs?.setBool('useNotifications', true);
     await _prefs?.setString('reminderTime', '10:00');
-    
+
     notifyListeners();
   }
 }
