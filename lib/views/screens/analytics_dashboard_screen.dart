@@ -6,81 +6,93 @@ import 'package:provider/provider.dart';
 import '../../controllers/loan_provider.dart';
 import '../../controllers/payment_provider.dart';
 import '../../models/loan_model.dart';
-import '../../models/payment_model.dart';
-import '../../utils/app_utils.dart';
 
 class AnalyticsDashboardScreen extends StatefulWidget {
   const AnalyticsDashboardScreen({super.key});
 
   @override
-  State<AnalyticsDashboardScreen> createState() => _AnalyticsDashboardScreenState();
+  State<AnalyticsDashboardScreen> createState() =>
+      _AnalyticsDashboardScreenState();
 }
 
 class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
   String _selectedTimeRange = 'Last 6 Months';
-  final List<String> _timeRanges = ['Last Month', 'Last 3 Months', 'Last 6 Months', 'Last Year', 'All Time'];
+  final List<String> _timeRanges = [
+    'Last Month',
+    'Last 3 Months',
+    'Last 6 Months',
+    'Last Year',
+    'All Time'
+  ];
   bool _isLoading = true;
-  
+
   // Chart data
   List<FlSpot> _paymentTrendsData = [];
   List<PieChartSectionData> _loanStatusData = [];
   Map<String, double> _borrowerDistribution = {};
-  
+
   @override
   void initState() {
     super.initState();
     _loadAnalyticsData();
   }
-  
+
   Future<void> _loadAnalyticsData() async {
     setState(() {
       _isLoading = true;
     });
-    
+
     await _generateChartData();
-    
+
     setState(() {
       _isLoading = false;
     });
   }
-  
+
   Future<void> _generateChartData() async {
     // Get data from providers
     final loanProvider = Provider.of<LoanProvider>(context, listen: false);
-    final paymentProvider = Provider.of<PaymentProvider>(context, listen: false);
-    
+    final paymentProvider =
+        Provider.of<PaymentProvider>(context, listen: false);
+
     await loanProvider.loadLoans();
     final loans = loanProvider.loans;
-    
+
     // Generate payment trends data
     final now = DateTime.now();
     final startDate = _getStartDateFromRange(_selectedTimeRange);
-    
+
     // Map to store payments by month
     Map<String, double> paymentsByMonth = {};
-    
+
     // Generate all months in range for x-axis
     DateTime current = DateTime(startDate.year, startDate.month);
-    while (current.isBefore(now) || current.month == now.month && current.year == now.year) {
+    while (current.isBefore(now) ||
+        current.month == now.month && current.year == now.year) {
       final monthKey = DateFormat('yyyy-MM').format(current);
       paymentsByMonth[monthKey] = 0.0;
-      current = DateTime(current.year + (current.month == 12 ? 1 : 0), current.month == 12 ? 1 : current.month + 1);
+      current = DateTime(current.year + (current.month == 12 ? 1 : 0),
+          current.month == 12 ? 1 : current.month + 1);
     }
-    
+
     // Populate payment data
     for (var loan in loans) {
       final payments = await paymentProvider.loadPaymentsForLoan(loan.id!);
-      
-      for (var payment in payments) {
-        if (payment.paymentDate.isAfter(startDate)) {
-          final monthKey = DateFormat('yyyy-MM').format(payment.paymentDate);
-          if (paymentsByMonth.containsKey(monthKey)) {
-            paymentsByMonth[monthKey] = (paymentsByMonth[monthKey] ?? 0) + payment.paymentAmount;
+
+      // Check if payments is not null before iterating
+      if (payments != null) {
+        for (var payment in payments) {
+          if (payment.paymentDate.isAfter(startDate)) {
+            final monthKey = DateFormat('yyyy-MM').format(payment.paymentDate);
+            if (paymentsByMonth.containsKey(monthKey)) {
+              paymentsByMonth[monthKey] =
+                  (paymentsByMonth[monthKey] ?? 0) + payment.paymentAmount;
+            }
           }
         }
       }
     }
-    
+
     // Convert to FL Chart spots
     List<FlSpot> spots = [];
     int index = 0;
@@ -88,15 +100,15 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
       spots.add(FlSpot(index.toDouble(), value));
       index++;
     });
-    
+
     // Generate loan status data
     int activeLoans = 0;
     int completedLoans = 0;
     int overdueLoans = 0;
-    
+
     // Borrower distribution data
     Map<String, double> borrowerAmounts = {};
-    
+
     for (var loan in loans) {
       // Count loan statuses
       if (loan.status == LoanStatus.completed) {
@@ -106,38 +118,40 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
       } else {
         activeLoans++;
       }
-      
+
       // Sum loan amounts by borrower
       if (borrowerAmounts.containsKey(loan.borrowerName)) {
-        borrowerAmounts[loan.borrowerName] = (borrowerAmounts[loan.borrowerName] ?? 0) + loan.remainingAmount;
+        borrowerAmounts[loan.borrowerName] =
+            (borrowerAmounts[loan.borrowerName] ?? 0) + loan.remainingAmount;
       } else {
         borrowerAmounts[loan.borrowerName] = loan.remainingAmount;
       }
     }
-    
+
     // Generate pie chart sections for loan status
     List<PieChartSectionData> pieData = [];
     if (activeLoans > 0) {
-      pieData.add(_generatePieSection('Active', activeLoans.toDouble(), Colors.blue));
+      pieData.add(
+          _generatePieSection('Active', activeLoans.toDouble(), Colors.blue));
     }
     if (completedLoans > 0) {
-      pieData.add(_generatePieSection('Completed', completedLoans.toDouble(), Colors.green));
+      pieData.add(_generatePieSection(
+          'Completed', completedLoans.toDouble(), Colors.green));
     }
     if (overdueLoans > 0) {
-      pieData.add(_generatePieSection('Overdue', overdueLoans.toDouble(), Colors.red));
+      pieData.add(
+          _generatePieSection('Overdue', overdueLoans.toDouble(), Colors.red));
     }
-    
+
     // Get top 5 borrowers by amount
     Map<String, double> topBorrowers = {};
-    borrowerAmounts.entries
-        .toList()
-        .sort((a, b) => b.value.compareTo(a.value));
-    
+    borrowerAmounts.entries.toList().sort((a, b) => b.value.compareTo(a.value));
+
     for (int i = 0; i < borrowerAmounts.length && i < 5; i++) {
       final entry = borrowerAmounts.entries.elementAt(i);
       topBorrowers[entry.key] = entry.value;
     }
-    
+
     // Update state with new data
     setState(() {
       _paymentTrendsData = spots;
@@ -145,7 +159,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
       _borrowerDistribution = topBorrowers;
     });
   }
-  
+
   DateTime _getStartDateFromRange(String range) {
     final now = DateTime.now();
     switch (range) {
@@ -162,8 +176,9 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
         return DateTime(2020, 1, 1); // Far back in time
     }
   }
-  
-  PieChartSectionData _generatePieSection(String title, double value, Color color) {
+
+  PieChartSectionData _generatePieSection(
+      String title, double value, Color color) {
     return PieChartSectionData(
       color: color,
       value: value,
@@ -182,7 +197,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
     final cardColor = isDarkMode ? Colors.grey[850] : Colors.white;
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Analytics Dashboard'),
@@ -222,7 +237,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
             ),
     );
   }
-  
+
   Widget _buildHeader(ThemeData theme) {
     return Container(
       padding: const EdgeInsets.all(16),
@@ -251,7 +266,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
       ),
     );
   }
-  
+
   Widget _buildTimeRangeSelector(ThemeData theme) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -284,7 +299,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
       ),
     );
   }
-  
+
   Widget _buildSectionTitle(String title, ThemeData theme) {
     return Text(
       title,
@@ -293,7 +308,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
       ),
     );
   }
-  
+
   Widget _buildPaymentTrendsChart(Color? cardColor, ThemeData theme) {
     return Card(
       color: cardColor,
@@ -314,9 +329,9 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
                 )
               : LineChart(
                   LineChartData(
-                    gridData: FlGridData(show: true),
+                    gridData: const FlGridData(show: true),
                     titlesData: FlTitlesData(
-                      bottomTitles: AxisTitles(
+                      bottomTitles: const AxisTitles(
                         sideTitles: SideTitles(showTitles: false),
                       ),
                       leftTitles: AxisTitles(
@@ -331,10 +346,10 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
                           },
                         ),
                       ),
-                      topTitles: AxisTitles(
+                      topTitles: const AxisTitles(
                         sideTitles: SideTitles(showTitles: false),
                       ),
-                      rightTitles: AxisTitles(
+                      rightTitles: const AxisTitles(
                         sideTitles: SideTitles(showTitles: false),
                       ),
                     ),
@@ -347,7 +362,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
                         isCurved: true,
                         color: theme.colorScheme.primary,
                         barWidth: 3,
-                        dotData: FlDotData(show: true),
+                        dotData: const FlDotData(show: true),
                         belowBarData: BarAreaData(
                           show: true,
                           color: theme.colorScheme.primary.withOpacity(0.2),
@@ -360,7 +375,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
       ),
     );
   }
-  
+
   Widget _buildLoanStatusChart(Color? cardColor, ThemeData theme) {
     return Card(
       color: cardColor,
@@ -390,7 +405,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
       ),
     );
   }
-  
+
   Widget _buildTopBorrowersList(Color? cardColor, ThemeData theme) {
     return Card(
       color: cardColor,
@@ -421,15 +436,18 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
                               flex: 3,
                               child: Text(
                                 entry.key,
-                                style: const TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
                               ),
                             ),
                             Expanded(
                               flex: 2,
                               child: LinearProgressIndicator(
                                 value: entry.value /
-                                    _borrowerDistribution.values.reduce((a, b) => a > b ? a : b),
-                                backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
+                                    _borrowerDistribution.values
+                                        .reduce((a, b) => a > b ? a : b),
+                                backgroundColor:
+                                    theme.colorScheme.primary.withOpacity(0.1),
                                 valueColor: AlwaysStoppedAnimation<Color>(
                                   theme.colorScheme.primary,
                                 ),
@@ -439,7 +457,8 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              NumberFormat.currency(symbol: '\$').format(entry.value),
+                              NumberFormat.currency(symbol: '\$')
+                                  .format(entry.value),
                               style: TextStyle(
                                 color: theme.colorScheme.primary,
                                 fontWeight: FontWeight.bold,
