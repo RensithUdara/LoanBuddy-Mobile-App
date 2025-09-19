@@ -95,10 +95,14 @@ class _CustomReminderSchedulingScreenState
 
     // Only schedule if the notification date is in the future
     if (notificationDate.isAfter(DateTime.now())) {
-      await PatchedNotificationService.scheduleDueDateReminder(
-        loan,
-        daysBeforeDue,
-      );
+      // Notification functionality commented out for now
+      // await PatchedNotificationService.scheduleDueDateReminder(
+      //   loan,
+      //   daysBeforeDue,
+      // );
+      
+      // For demo purposes, just print the notification details
+      print('Would schedule notification for ${loan.borrowerName}\'s loan on ${DateFormat('MMM dd, yyyy').format(notificationDate)}');
     }
   }
 
