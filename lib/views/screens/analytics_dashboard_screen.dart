@@ -16,7 +16,7 @@ class AnalyticsDashboardScreen extends StatefulWidget {
 }
 
 class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
-  String _selectedTimeRange = 'Last 6 Months';
+  final String _selectedTimeRange = 'Last 6 Months';
   final List<String> _timeRanges = [
     'Last Month',
     'Last 3 Months',
@@ -27,9 +27,9 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
   bool _isLoading = true;
 
   // Chart data
-  List<FlSpot> _paymentTrendsData = [];
-  List<PieChartSectionData> _loanStatusData = [];
-  Map<String, double> _borrowerDistribution = {};
+  final List<FlSpot> _paymentTrendsData = [];
+  final List<PieChartSectionData> _loanStatusData = [];
+  final Map<String, double> _borrowerDistribution = {};
 
   @override
   void initState() {
@@ -77,17 +77,16 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
 
     // Populate payment data
     for (var loan in loans) {
-      final payments = await paymentProvider.loadPaymentsForLoan(loan.id!);
+      // Get payments using DatabaseHelper directly
+      final db = DatabaseHelper();
+      final payments = await db.getPaymentsForLoan(loan.id!);
 
-      // Check if payments is not null before iterating
-      if (payments != null) {
-        for (var payment in payments) {
-          if (payment.paymentDate.isAfter(startDate)) {
-            final monthKey = DateFormat('yyyy-MM').format(payment.paymentDate);
-            if (paymentsByMonth.containsKey(monthKey)) {
-              paymentsByMonth[monthKey] =
-                  (paymentsByMonth[monthKey] ?? 0) + payment.paymentAmount;
-            }
+      for (var payment in payments) {
+        if (payment.paymentDate.isAfter(startDate)) {
+          final monthKey = DateFormat('yyyy-MM').format(payment.paymentDate);
+          if (paymentsByMonth.containsKey(monthKey)) {
+            paymentsByMonth[monthKey] =
+                (paymentsByMonth[monthKey] ?? 0) + payment.paymentAmount;
           }
         }
       }
@@ -153,7 +152,8 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
     }
 
     // Update state with new data
-    setState(() {
+    @override
+  setState(() {
       _paymentTrendsData = spots;
       _loanStatusData = pieData;
       _borrowerDistribution = topBorrowers;
@@ -474,3 +474,4 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
     );
   }
 }
+
