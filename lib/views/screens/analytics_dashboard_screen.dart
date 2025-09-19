@@ -77,12 +77,12 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
 
     // Populate payment data
     for (var loan in loans) {
-      final payments = await paymentProvider.loadPaymentsForLoan(loan.id!);
+      // Get payments using DatabaseHelper directly
+      final db = DatabaseHelper();
+      final payments = await db.getPaymentsForLoan(loan.id!);
 
-      // Check if payments is not null before iterating
-      if (payments != null) {
-        for (var payment in payments) {
-          if (payment.paymentDate.isAfter(startDate)) {
+      for (var payment in payments) {
+        if (payment.paymentDate.isAfter(startDate)) {
             final monthKey = DateFormat('yyyy-MM').format(payment.paymentDate);
             if (paymentsByMonth.containsKey(monthKey)) {
               paymentsByMonth[monthKey] =
