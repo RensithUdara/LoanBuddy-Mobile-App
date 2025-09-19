@@ -13,7 +13,7 @@ class AppDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final settingsProvider = Provider.of<SettingsProvider>(context);
     final isDarkMode = settingsProvider.isDarkMode;
-    
+
     return Drawer(
       child: Column(
         children: [
@@ -21,7 +21,7 @@ class AppDrawer extends StatelessWidget {
             decoration: BoxDecoration(
               color: isDarkMode ? Colors.grey[900] : Colors.blue,
             ),
-            child: Center(
+            child: const Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -30,8 +30,8 @@ class AppDrawer extends StatelessWidget {
                     size: 64,
                     color: Colors.white,
                   ),
-                  const SizedBox(height: 12),
-                  const Text(
+                  SizedBox(height: 12),
+                  Text(
                     'LoanBuddy',
                     style: TextStyle(
                       fontSize: 24,
