@@ -83,11 +83,10 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
 
       for (var payment in payments) {
         if (payment.paymentDate.isAfter(startDate)) {
-            final monthKey = DateFormat('yyyy-MM').format(payment.paymentDate);
-            if (paymentsByMonth.containsKey(monthKey)) {
-              paymentsByMonth[monthKey] =
-                  (paymentsByMonth[monthKey] ?? 0) + payment.paymentAmount;
-            }
+          final monthKey = DateFormat('yyyy-MM').format(payment.paymentDate);
+          if (paymentsByMonth.containsKey(monthKey)) {
+            paymentsByMonth[monthKey] =
+                (paymentsByMonth[monthKey] ?? 0) + payment.paymentAmount;
           }
         }
       }
