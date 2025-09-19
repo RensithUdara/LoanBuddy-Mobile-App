@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../controllers/loan_provider.dart';
 import '../../models/loan_model.dart';
 import '../../utils/app_utils.dart';
+import '../widgets/app_drawer.dart';
 import '../widgets/common_widgets.dart';
 import 'add_loan_screen.dart';
 import 'loan_details_screen.dart';
@@ -124,6 +125,12 @@ class _DashboardScreenState extends State<DashboardScreen>
                 floating: true,
                 pinned: true,
                 elevation: 0,
+                leading: IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                ),
                 backgroundColor: theme.scaffoldBackgroundColor,
                 flexibleSpace: FlexibleSpaceBar(
                   background: Container(
