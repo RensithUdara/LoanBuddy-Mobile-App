@@ -71,11 +71,14 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
     for (var loan in loans) {
       final payments = await paymentProvider.loadPaymentsForLoan(loan.id!);
       
-      for (var payment in payments) {
-        if (payment.paymentDate.isAfter(startDate)) {
-          final monthKey = DateFormat('yyyy-MM').format(payment.paymentDate);
-          if (paymentsByMonth.containsKey(monthKey)) {
-            paymentsByMonth[monthKey] = (paymentsByMonth[monthKey] ?? 0) + payment.paymentAmount;
+      // Check if payments is not null before iterating
+      if (payments != null) {
+        for (var payment in payments) {
+          if (payment.paymentDate.isAfter(startDate)) {
+            final monthKey = DateFormat('yyyy-MM').format(payment.paymentDate);
+            if (paymentsByMonth.containsKey(monthKey)) {
+              paymentsByMonth[monthKey] = (paymentsByMonth[monthKey] ?? 0) + payment.paymentAmount;
+            }
           }
         }
       }
