@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../controllers/loan_provider.dart';
 import '../../models/loan_model.dart';
-import '../../services/patched_notification_service.dart';
+// import '../../services/patched_notification_service.dart';
 
 class CustomReminderSchedulingScreen extends StatefulWidget {
   const CustomReminderSchedulingScreen({super.key});
 
   @override
-  State<CustomReminderSchedulingScreen> createState() => _CustomReminderSchedulingScreenState();
+  State<CustomReminderSchedulingScreen> createState() =>
+      _CustomReminderSchedulingScreenState();
 }
 
-class _CustomReminderSchedulingScreenState extends State<CustomReminderSchedulingScreen> {
+class _CustomReminderSchedulingScreenState
+    extends State<CustomReminderSchedulingScreen> {
   bool _isNotificationsEnabled = false;
   bool _isLoading = true;
   List<Loan> _activeLoans = [];
@@ -29,13 +31,13 @@ class _CustomReminderSchedulingScreenState extends State<CustomReminderSchedulin
   }
 
   Future<void> _initializeNotifications() async {
-    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = 
+    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();
     final notificationSettings = await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.requestPermission();
-    
+
     setState(() {
       _isNotificationsEnabled = notificationSettings ?? false;
     });
@@ -45,26 +47,26 @@ class _CustomReminderSchedulingScreenState extends State<CustomReminderSchedulin
     setState(() {
       _isLoading = true;
     });
-    
+
     final loanProvider = Provider.of<LoanProvider>(context, listen: false);
     await loanProvider.loadLoans();
-    
+
     final activeLoans = loanProvider.loans
         .where((loan) => loan.status == LoanStatus.active)
         .toList();
-    
+
     // Initialize reminder settings from shared preferences
     // In a real implementation, this would load from persistent storage
     Map<int, bool> reminderMap = {};
     Map<int, int> daysMap = {};
-    
+
     for (var loan in activeLoans) {
       if (loan.id != null) {
         reminderMap[loan.id!] = true; // Default to enabled
         daysMap[loan.id!] = 3; // Default to 3 days before
       }
     }
-    
+
     setState(() {
       _activeLoans = activeLoans;
       _reminderEnabledMap = reminderMap;
@@ -73,25 +75,27 @@ class _CustomReminderSchedulingScreenState extends State<CustomReminderSchedulin
     });
   }
 
-  Future<void> _saveReminderSettings(int loanId, bool isEnabled, int days) async {
+  Future<void> _saveReminderSettings(
+      int loanId, bool isEnabled, int days) async {
     setState(() {
       _reminderEnabledMap[loanId] = isEnabled;
       _reminderDaysMap[loanId] = days;
     });
-    
+
     // In a real implementation, save to persistent storage
-    
+
     // Schedule notification if enabled
     if (isEnabled) {
       final loan = _activeLoans.firstWhere((loan) => loan.id == loanId);
       await _scheduleNotification(loan, days);
     }
   }
-  
+
   Future<void> _scheduleNotification(Loan loan, int daysBeforeDue) async {
     // Get the notification date (due date - days before)
-    final notificationDate = loan.dueDate.subtract(Duration(days: daysBeforeDue));
-    
+    final notificationDate =
+        loan.dueDate.subtract(Duration(days: daysBeforeDue));
+
     // Only schedule if the notification date is in the future
     if (notificationDate.isAfter(DateTime.now())) {
       await PatchedNotificationService.scheduleDueDateReminder(
@@ -105,7 +109,7 @@ class _CustomReminderSchedulingScreenState extends State<CustomReminderSchedulin
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Custom Reminders'),
@@ -123,7 +127,8 @@ class _CustomReminderSchedulingScreenState extends State<CustomReminderSchedulin
                           itemCount: _activeLoans.length,
                           itemBuilder: (context, index) {
                             final loan = _activeLoans[index];
-                            return _buildLoanReminderCard(loan, theme, isDarkMode);
+                            return _buildLoanReminderCard(
+                                loan, theme, isDarkMode);
                           },
                         ),
                 ),
@@ -131,13 +136,14 @@ class _CustomReminderSchedulingScreenState extends State<CustomReminderSchedulin
             ),
     );
   }
-  
+
   Widget _buildHeader(ThemeData theme, bool isDarkMode) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey[850] : theme.primaryColor.withOpacity(0.1),
+        color:
+            isDarkMode ? Colors.grey[850] : theme.primaryColor.withOpacity(0.1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -157,12 +163,10 @@ class _CustomReminderSchedulingScreenState extends State<CustomReminderSchedulin
           Row(
             children: [
               Icon(
-                _isNotificationsEnabled 
-                    ? Icons.notifications_active 
+                _isNotificationsEnabled
+                    ? Icons.notifications_active
                     : Icons.notifications_off,
-                color: _isNotificationsEnabled 
-                    ? Colors.green 
-                    : Colors.red,
+                color: _isNotificationsEnabled ? Colors.green : Colors.red,
               ),
               const SizedBox(width: 8),
               Text(
@@ -179,7 +183,7 @@ class _CustomReminderSchedulingScreenState extends State<CustomReminderSchedulin
       ),
     );
   }
-  
+
   Widget _buildEmptyState(ThemeData theme) {
     return Center(
       child: Padding(
@@ -212,12 +216,12 @@ class _CustomReminderSchedulingScreenState extends State<CustomReminderSchedulin
       ),
     );
   }
-  
+
   Widget _buildLoanReminderCard(Loan loan, ThemeData theme, bool isDarkMode) {
     final loanId = loan.id!;
     final isReminderEnabled = _reminderEnabledMap[loanId] ?? false;
     final reminderDays = _reminderDaysMap[loanId] ?? 3;
-    
+
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       elevation: 2,
