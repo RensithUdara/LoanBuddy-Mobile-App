@@ -141,7 +141,7 @@ class _AddLoanScreenState extends State<AddLoanScreen> {
                       decoration: const InputDecoration(
                         labelText: 'Loan Amount',
                         prefixIcon: Icon(Icons.currency_rupee),
-                        prefixText: '₹ ',
+                        prefixText: 'Rs. ',
                         hintText: '0',
                       ),
                       keyboardType: TextInputType.number,

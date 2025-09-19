@@ -188,7 +188,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         value: value,
         onChanged: onChanged,
         items: const [
-          DropdownMenuItem(value: '₹', child: Text('₹ (INR)')),
+          DropdownMenuItem(value: 'Rs.', child: Text('Rs. (INR)')),
           DropdownMenuItem(value: '\$', child: Text('\$ (USD)')),
           DropdownMenuItem(value: '€', child: Text('€ (EUR)')),
           DropdownMenuItem(value: '£', child: Text('£ (GBP)')),

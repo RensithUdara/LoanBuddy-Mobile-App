@@ -106,7 +106,7 @@ class _LoanDetailsScreenState extends State<LoanDetailsScreen> {
                 decoration: InputDecoration(
                   labelText: 'Payment Amount',
                   prefixIcon: const Icon(Icons.currency_rupee),
-                  prefixText: '₹ ',
+                  prefixText: 'Rs. ',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
