@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SettingsProvider extends ChangeNotifier {
   SharedPreferences? _prefs;
   bool _isDarkMode = false;
-  String _currency = '₹';
+  String _currency = 'Rs.';
   bool _useNotifications = true;
   String _reminderTime = '10:00';
 
@@ -23,7 +23,7 @@ class SettingsProvider extends ChangeNotifier {
   Future<void> _loadSettings() async {
     _prefs = await SharedPreferences.getInstance();
     _isDarkMode = _prefs?.getBool('isDarkMode') ?? false;
-    _currency = _prefs?.getString('currency') ?? '₹';
+    _currency = _prefs?.getString('currency') ?? 'Rs.';
     _useNotifications = _prefs?.getBool('useNotifications') ?? true;
     _reminderTime = _prefs?.getString('reminderTime') ?? '10:00';
     notifyListeners();
@@ -60,12 +60,12 @@ class SettingsProvider extends ChangeNotifier {
   // Reset all settings to default
   Future<void> resetSettings() async {
     _isDarkMode = false;
-    _currency = '₹';
+    _currency = 'Rs.';
     _useNotifications = true;
     _reminderTime = '10:00';
 
     await _prefs?.setBool('isDarkMode', false);
-    await _prefs?.setString('currency', '₹');
+    await _prefs?.setString('currency', 'Rs.');
     await _prefs?.setBool('useNotifications', true);
     await _prefs?.setString('reminderTime', '10:00');
 
