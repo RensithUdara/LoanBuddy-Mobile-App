@@ -16,7 +16,7 @@ class AnalyticsDashboardScreen extends StatefulWidget {
 }
 
 class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
-  String _selectedTimeRange = 'Last 6 Months';
+  final String _selectedTimeRange = 'Last 6 Months';
   final List<String> _timeRanges = [
     'Last Month',
     'Last 3 Months',
@@ -27,9 +27,9 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
   bool _isLoading = true;
 
   // Chart data
-  List<FlSpot> _paymentTrendsData = [];
-  List<PieChartSectionData> _loanStatusData = [];
-  Map<String, double> _borrowerDistribution = {};
+  final List<FlSpot> _paymentTrendsData = [];
+  final List<PieChartSectionData> _loanStatusData = [];
+  final Map<String, double> _borrowerDistribution = {};
 
   @override
   void initState() {
@@ -153,7 +153,8 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
     }
 
     // Update state with new data
-    setState(() {
+    @override
+  setState(() {
       _paymentTrendsData = spots;
       _loanStatusData = pieData;
       _borrowerDistribution = topBorrowers;
