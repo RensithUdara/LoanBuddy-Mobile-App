@@ -4,8 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../controllers/loan_provider.dart';
-import '../../controllers/payment_provider.dart';
 import '../../models/loan_model.dart';
+import '../../services/database_helper.dart';
 
 class AnalyticsDashboardScreen extends StatefulWidget {
   const AnalyticsDashboardScreen({super.key});
@@ -16,7 +16,7 @@ class AnalyticsDashboardScreen extends StatefulWidget {
 }
 
 class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
-  final String _selectedTimeRange = 'Last 6 Months';
+  String _selectedTimeRange = 'Last 6 Months';
   final List<String> _timeRanges = [
     'Last Month',
     'Last 3 Months',
@@ -27,9 +27,9 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
   bool _isLoading = true;
 
   // Chart data
-  final List<FlSpot> _paymentTrendsData = [];
-  final List<PieChartSectionData> _loanStatusData = [];
-  final Map<String, double> _borrowerDistribution = {};
+  List<FlSpot> _paymentTrendsData = [];
+  List<PieChartSectionData> _loanStatusData = [];
+  Map<String, double> _borrowerDistribution = {};
 
   @override
   void initState() {
@@ -52,8 +52,6 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
   Future<void> _generateChartData() async {
     // Get data from providers
     final loanProvider = Provider.of<LoanProvider>(context, listen: false);
-    final paymentProvider =
-        Provider.of<PaymentProvider>(context, listen: false);
 
     await loanProvider.loadLoans();
     final loans = loanProvider.loans;
@@ -152,8 +150,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen> {
     }
 
     // Update state with new data
-    @override
-  setState(() {
+    setState(() {
       _paymentTrendsData = spots;
       _loanStatusData = pieData;
       _borrowerDistribution = topBorrowers;
