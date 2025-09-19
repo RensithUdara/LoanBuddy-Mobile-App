@@ -100,9 +100,10 @@ class _CustomReminderSchedulingScreenState
       //   loan,
       //   daysBeforeDue,
       // );
-      
+
       // For demo purposes, just print the notification details
-      print('Would schedule notification for ${loan.borrowerName}\'s loan on ${DateFormat('MMM dd, yyyy').format(notificationDate)}');
+      print(
+          'Would schedule notification for ${loan.borrowerName}\'s loan on ${DateFormat('MMM dd, yyyy').format(notificationDate)}');
     }
   }
 
