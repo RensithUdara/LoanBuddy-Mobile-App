@@ -65,8 +65,9 @@ dependencies:
   fl_chart: ^0.66.2
   
   # Notifications
-  flutter_local_notifications: ^10.0.0
-  timezone: ^0.9.2
+  # Commented out due to Android namespace configuration issue
+  # flutter_local_notifications: ^10.0.0
+  timezone: 0.8.0
 
 dev_dependencies:
   flutter_test:
