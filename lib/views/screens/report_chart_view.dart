@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../models/report_model.dart';
-import '../../models/loan_model.dart';
 
 class ReportChartView extends StatefulWidget {
   final Report report;
@@ -78,7 +77,8 @@ class _ReportChartViewState extends State<ReportChartView> {
                     sections: [
                       PieChartSectionData(
                         value: paidAmount,
-                        title: '${(summary.paymentCompletionRate).toStringAsFixed(0)}%',
+                        title:
+                            '${(summary.paymentCompletionRate).toStringAsFixed(0)}%',
                         color: Colors.green,
                         radius: 80,
                         titleStyle: const TextStyle(
@@ -89,7 +89,8 @@ class _ReportChartViewState extends State<ReportChartView> {
                       ),
                       PieChartSectionData(
                         value: outstandingAmount,
-                        title: '${(100 - summary.paymentCompletionRate).toStringAsFixed(0)}%',
+                        title:
+                            '${(100 - summary.paymentCompletionRate).toStringAsFixed(0)}%',
                         color: Colors.orange,
                         radius: 80,
                         titleStyle: const TextStyle(
@@ -167,7 +168,11 @@ class _ReportChartViewState extends State<ReportChartView> {
                         sideTitles: SideTitles(
                           showTitles: true,
                           getTitlesWidget: (value, meta) {
-                            List<String> titles = ['Active', 'Completed', 'Overdue'];
+                            List<String> titles = [
+                              'Active',
+                              'Completed',
+                              'Overdue'
+                            ];
                             if (value >= 0 && value < titles.length) {
                               return Padding(
                                 padding: const EdgeInsets.only(top: 8.0),
@@ -197,7 +202,8 @@ class _ReportChartViewState extends State<ReportChartView> {
                         x: 0,
                         barRods: [
                           BarChartRodData(
-                            toY: (summary.activeLoans - summary.overdueLoans).toDouble(),
+                            toY: (summary.activeLoans - summary.overdueLoans)
+                                .toDouble(),
                             color: Colors.blue,
                             width: 22,
                             borderRadius: const BorderRadius.only(
@@ -289,7 +295,8 @@ class _ReportChartViewState extends State<ReportChartView> {
 
     int index = 0;
     for (final section in sections) {
-      if (section.items.isEmpty || section.items.first is! DateGroupReportItem) {
+      if (section.items.isEmpty ||
+          section.items.first is! DateGroupReportItem) {
         continue;
       }
 
@@ -325,7 +332,7 @@ class _ReportChartViewState extends State<ReportChartView> {
                       tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
                     ),
                   ),
-                  gridData: FlGridData(
+                  gridData: const FlGridData(
                     show: true,
                     drawVerticalLine: true,
                     horizontalInterval: 1000,
@@ -448,7 +455,7 @@ class _ReportChartViewState extends State<ReportChartView> {
 
       final newLoans = section.sectionTotals['newLoans'] ?? 0.0;
       final completedLoans = section.sectionTotals['completedLoans'] ?? 0.0;
-      
+
       newLoanSpots.add(FlSpot(index.toDouble(), newLoans));
       completedSpots.add(FlSpot(index.toDouble(), completedLoans));
       bottomTitles.add(section.title);
@@ -480,7 +487,7 @@ class _ReportChartViewState extends State<ReportChartView> {
                       tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
                     ),
                   ),
-                  gridData: FlGridData(
+                  gridData: const FlGridData(
                     show: true,
                     drawVerticalLine: true,
                     horizontalInterval: 1,
@@ -582,12 +589,11 @@ class _ReportChartViewState extends State<ReportChartView> {
 
     // Get top 5 borrowers by outstanding amount
     final sortedSections = List<ReportSection>.from(sections)
-      ..sort((a, b) => 
-          (b.sectionTotals['outstandingAmount'] ?? 0)
-              .compareTo(a.sectionTotals['outstandingAmount'] ?? 0));
-    
+      ..sort((a, b) => (b.sectionTotals['outstandingAmount'] ?? 0)
+          .compareTo(a.sectionTotals['outstandingAmount'] ?? 0));
+
     final topBorrowers = sortedSections.take(5).toList();
-    
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -605,9 +611,12 @@ class _ReportChartViewState extends State<ReportChartView> {
               child: BarChart(
                 BarChartData(
                   alignment: BarChartAlignment.spaceAround,
-                  maxY: topBorrowers.isEmpty 
-                      ? 0 
-                      : (topBorrowers.map((s) => s.sectionTotals['totalAmount'] ?? 0.0).reduce((a, b) => a > b ? a : b) * 1.2),
+                  maxY: topBorrowers.isEmpty
+                      ? 0
+                      : (topBorrowers
+                              .map((s) => s.sectionTotals['totalAmount'] ?? 0.0)
+                              .reduce((a, b) => a > b ? a : b) *
+                          1.2),
                   barTouchData: BarTouchData(
                     enabled: true,
                     touchTooltipData: BarTouchTooltipData(
@@ -615,10 +624,13 @@ class _ReportChartViewState extends State<ReportChartView> {
                       getTooltipItem: (group, groupIndex, rod, rodIndex) {
                         if (groupIndex < topBorrowers.length) {
                           final section = topBorrowers[groupIndex];
-                          final totalAmount = section.sectionTotals['totalAmount'] ?? 0.0;
-                          final paidAmount = section.sectionTotals['paidAmount'] ?? 0.0;
-                          final outstandingAmount = section.sectionTotals['outstandingAmount'] ?? 0.0;
-                          
+                          final totalAmount =
+                              section.sectionTotals['totalAmount'] ?? 0.0;
+                          final paidAmount =
+                              section.sectionTotals['paidAmount'] ?? 0.0;
+                          final outstandingAmount =
+                              section.sectionTotals['outstandingAmount'] ?? 0.0;
+
                           return BarTooltipItem(
                             '${section.title}\n'
                             'Total: ${NumberFormat.currency(symbol: '₹', decimalDigits: 0).format(totalAmount)}\n'
@@ -685,10 +697,13 @@ class _ReportChartViewState extends State<ReportChartView> {
                   ),
                   barGroups: List.generate(topBorrowers.length, (index) {
                     final section = topBorrowers[index];
-                    final totalAmount = section.sectionTotals['totalAmount'] ?? 0.0;
-                    final paidAmount = section.sectionTotals['paidAmount'] ?? 0.0;
-                    final outstandingAmount = section.sectionTotals['outstandingAmount'] ?? 0.0;
-                    
+                    final totalAmount =
+                        section.sectionTotals['totalAmount'] ?? 0.0;
+                    final paidAmount =
+                        section.sectionTotals['paidAmount'] ?? 0.0;
+                    final outstandingAmount =
+                        section.sectionTotals['outstandingAmount'] ?? 0.0;
+
                     return BarChartGroupData(
                       x: index,
                       barRods: [
@@ -696,7 +711,8 @@ class _ReportChartViewState extends State<ReportChartView> {
                           toY: totalAmount,
                           rodStackItems: [
                             BarChartRodStackItem(0, paidAmount, Colors.green),
-                            BarChartRodStackItem(paidAmount, totalAmount, Colors.orange),
+                            BarChartRodStackItem(
+                                paidAmount, totalAmount, Colors.orange),
                           ],
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(6),
@@ -734,7 +750,8 @@ class _ReportChartViewState extends State<ReportChartView> {
     // Calculate values for overdue periods
     Map<String, double> overdueValues = {};
     for (var section in sections) {
-      overdueValues[section.title] = section.sectionTotals['outstandingAmount'] ?? 0.0;
+      overdueValues[section.title] =
+          section.sectionTotals['outstandingAmount'] ?? 0.0;
     }
 
     // Standard overdue periods
@@ -760,7 +777,7 @@ class _ReportChartViewState extends State<ReportChartView> {
       Colors.red,
     ];
 
-    periods.forEach((period) {
+    for (var period in periods) {
       final value = overdueValues[period] ?? 0.0;
       if (value > 0) {
         sections.add(
@@ -778,7 +795,7 @@ class _ReportChartViewState extends State<ReportChartView> {
         );
       }
       i++;
-    });
+    }
 
     if (sections.isEmpty) {
       return const Center(child: Text('No overdue loans'));
