@@ -92,17 +92,53 @@ class SettingsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Update default report type
+  Future<void> setDefaultReportType(ReportType value) async {
+    _defaultReportType = value;
+    await _prefs?.setString('defaultReportType', value.name);
+    notifyListeners();
+  }
+
+  // Update default date filter
+  Future<void> setDefaultDateFilter(DateFilterType value) async {
+    _defaultDateFilter = value;
+    await _prefs?.setString('defaultDateFilter', value.name);
+    notifyListeners();
+  }
+
+  // Update include charts setting
+  Future<void> setIncludeCharts(bool value) async {
+    _includeCharts = value;
+    await _prefs?.setBool('includeCharts', value);
+    notifyListeners();
+  }
+
+  // Update export format setting
+  Future<void> setExportFormat(String value) async {
+    _exportFormat = value;
+    await _prefs?.setString('exportFormat', value);
+    notifyListeners();
+  }
+
   // Reset all settings to default
   Future<void> resetSettings() async {
     _isDarkMode = false;
     _currency = 'Rs.';
     _useNotifications = true;
     _reminderTime = '10:00';
+    _defaultReportType = ReportType.summary;
+    _defaultDateFilter = DateFilterType.thisMonth;
+    _includeCharts = true;
+    _exportFormat = 'PDF';
 
     await _prefs?.setBool('isDarkMode', false);
     await _prefs?.setString('currency', 'Rs.');
     await _prefs?.setBool('useNotifications', true);
     await _prefs?.setString('reminderTime', '10:00');
+    await _prefs?.setString('defaultReportType', ReportType.summary.name);
+    await _prefs?.setString('defaultDateFilter', DateFilterType.thisMonth.name);
+    await _prefs?.setBool('includeCharts', true);
+    await _prefs?.setString('exportFormat', 'PDF');
 
     notifyListeners();
   }
