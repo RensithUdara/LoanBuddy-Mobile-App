@@ -318,12 +318,6 @@ class ReportGenerationService {
     // Calculate summary metrics
     final summary = await _calculateReportSummary(loans, filter);
 
-    // Define date range
-    DateTime startDate = filter.startDate ??
-        DateTime(2000); // Default to past date if not specified
-    DateTime endDate =
-        filter.endDate ?? DateTime.now(); // Default to today if not specified
-
     // Group by month
     Map<String, DateGroupData> monthlyData = {};
 
