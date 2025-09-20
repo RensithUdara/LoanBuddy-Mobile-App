@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../../controllers/loan_provider.dart';
 import '../../models/loan_model.dart';
 import '../../utils/app_utils.dart';
-import '../widgets/app_drawer.dart';
 import '../widgets/common_widgets.dart';
 import 'add_loan_screen.dart';
 import 'loan_details_screen.dart';
@@ -416,7 +415,8 @@ class _DashboardScreenState extends State<DashboardScreen>
               // Navigate to Reports screen
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const ReportSelectionScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const ReportSelectionScreen()),
               );
               setState(() => _selectedIndex = 0);
             } else if (index == 2) {
@@ -505,14 +505,18 @@ class _DashboardScreenState extends State<DashboardScreen>
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const ReportSelectionScreen()),
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const ReportSelectionScreen()),
                         );
                       },
                       borderRadius: BorderRadius.circular(20),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
                         decoration: BoxDecoration(
-                          color: theme.colorScheme.primaryContainer.withOpacity(0.3),
+                          color: theme.colorScheme.primaryContainer
+                              .withOpacity(0.3),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Row(
