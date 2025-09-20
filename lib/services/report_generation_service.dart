@@ -281,8 +281,9 @@ class ReportGenerationService {
 
       // Create a list of ReportItem (mixing BorrowerReportItem and LoanReportItem)
       final List<ReportItem> sectionItems = <ReportItem>[borrowerItem];
-      sectionItems.addAll(borrowerLoanList.map((loan) => LoanReportItem(loan: loan)));
-      
+      sectionItems
+          .addAll(borrowerLoanList.map((loan) => LoanReportItem(loan: loan)));
+
       sections.add(ReportSection(
         title: borrower,
         items: sectionItems,
