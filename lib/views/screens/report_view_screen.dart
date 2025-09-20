@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -150,25 +150,29 @@ class _ReportViewScreenState extends State<ReportViewScreen>
                     pw.TableRow(
                       children: [
                         _pdfTableCell('Total Loan Amount'),
-                        _pdfTableCell('$currencySymbol ${NumberFormat('#,##0.00').format(report.summary.totalLoanAmount)}'),
+                        _pdfTableCell(
+                            '$currencySymbol ${NumberFormat('#,##0.00').format(report.summary.totalLoanAmount)}'),
                       ],
                     ),
                     pw.TableRow(
                       children: [
                         _pdfTableCell('Total Paid Amount'),
-                        _pdfTableCell('$currencySymbol ${NumberFormat('#,##0.00').format(report.summary.totalPaidAmount)}'),
+                        _pdfTableCell(
+                            '$currencySymbol ${NumberFormat('#,##0.00').format(report.summary.totalPaidAmount)}'),
                       ],
                     ),
                     pw.TableRow(
                       children: [
                         _pdfTableCell('Total Outstanding'),
-                        _pdfTableCell('$currencySymbol ${NumberFormat('#,##0.00').format(report.summary.totalOutstandingAmount)}'),
+                        _pdfTableCell(
+                            '$currencySymbol ${NumberFormat('#,##0.00').format(report.summary.totalOutstandingAmount)}'),
                       ],
                     ),
                     pw.TableRow(
                       children: [
                         _pdfTableCell('Overdue Amount'),
-                        _pdfTableCell('$currencySymbol ${NumberFormat('#,##0.00').format(report.summary.overdueAmount)}',
+                        _pdfTableCell(
+                            '$currencySymbol ${NumberFormat('#,##0.00').format(report.summary.overdueAmount)}',
                             color: report.summary.overdueAmount > 0
                                 ? PdfColors.red
                                 : null),
@@ -177,7 +181,8 @@ class _ReportViewScreenState extends State<ReportViewScreen>
                     pw.TableRow(
                       children: [
                         _pdfTableCell('Payment Completion Rate'),
-                        _pdfTableCell('${report.summary.paymentCompletionRate.toStringAsFixed(2)}%'),
+                        _pdfTableCell(
+                            '${report.summary.paymentCompletionRate.toStringAsFixed(2)}%'),
                       ],
                     ),
                   ],
@@ -260,7 +265,8 @@ class _ReportViewScreenState extends State<ReportViewScreen>
   }
 
   // Helper method to build the content for a PDF section
-  pw.Widget _buildPdfSectionContent(ReportSection section, String currencySymbol) {
+  pw.Widget _buildPdfSectionContent(
+      ReportSection section, String currencySymbol) {
     // For different report types, customize the section content
     if (section.items.isEmpty) {
       return pw.Text('No data available for this section');
@@ -268,39 +274,57 @@ class _ReportViewScreenState extends State<ReportViewScreen>
 
     // If first item is DateGroupReportItem, show date group table
     if (section.items.first is DateGroupReportItem) {
-      final columns = ['Period', 'New Loans', 'Total Lent', 'Total Received', 'Completed'];
-      
+      final columns = [
+        'Period',
+        'New Loans',
+        'Total Lent',
+        'Total Received',
+        'Completed'
+      ];
+
       return pw.Table(
         border: pw.TableBorder.all(color: PdfColors.grey300),
         children: [
           // Header row
           pw.TableRow(
             decoration: const pw.BoxDecoration(color: PdfColors.grey200),
-            children: columns.map((col) => _pdfTableCell(col, isHeader: true)).toList(),
+            children: columns
+                .map((col) => _pdfTableCell(col, isHeader: true))
+                .toList(),
           ),
           // Data rows
           ...section.items.map((item) {
             final dateItem = item as DateGroupReportItem;
             return pw.TableRow(
               children: [
-                _pdfTableCell(DateFormat('MMM yyyy').format(dateItem.startDate)),
+                _pdfTableCell(
+                    DateFormat('MMM yyyy').format(dateItem.startDate)),
                 _pdfTableCell(dateItem.newLoans.toString()),
-                _pdfTableCell('$currencySymbol ${NumberFormat('#,##0.00').format(dateItem.totalLent)}'),
-                _pdfTableCell('$currencySymbol ${NumberFormat('#,##0.00').format(dateItem.totalReceived)}'),
+                _pdfTableCell(
+                    '$currencySymbol ${NumberFormat('#,##0.00').format(dateItem.totalLent)}'),
+                _pdfTableCell(
+                    '$currencySymbol ${NumberFormat('#,##0.00').format(dateItem.totalReceived)}'),
                 _pdfTableCell(dateItem.completedLoans.toString()),
               ],
             );
-          }).toList(),
+          }),
           // Totals row if available
           if (section.sectionTotals.isNotEmpty)
             pw.TableRow(
               decoration: const pw.BoxDecoration(color: PdfColors.grey100),
               children: [
                 _pdfTableCell('Total', isHeader: true),
-                _pdfTableCell(section.sectionTotals['newLoans']?.toInt().toString() ?? ''),
-                _pdfTableCell('$currencySymbol ${NumberFormat('#,##0.00').format(section.sectionTotals['totalLent'] ?? 0)}'),
-                _pdfTableCell('$currencySymbol ${NumberFormat('#,##0.00').format(section.sectionTotals['totalReceived'] ?? 0)}'),
-                _pdfTableCell(section.sectionTotals['completedLoans']?.toInt().toString() ?? ''),
+                _pdfTableCell(
+                    section.sectionTotals['newLoans']?.toInt().toString() ??
+                        ''),
+                _pdfTableCell(
+                    '$currencySymbol ${NumberFormat('#,##0.00').format(section.sectionTotals['totalLent'] ?? 0)}'),
+                _pdfTableCell(
+                    '$currencySymbol ${NumberFormat('#,##0.00').format(section.sectionTotals['totalReceived'] ?? 0)}'),
+                _pdfTableCell(section.sectionTotals['completedLoans']
+                        ?.toInt()
+                        .toString() ??
+                    ''),
               ],
             ),
         ],
@@ -310,7 +334,7 @@ class _ReportViewScreenState extends State<ReportViewScreen>
     // If first item is BorrowerReportItem, show borrower summary
     if (section.items.first is BorrowerReportItem) {
       final borrower = section.items.first as BorrowerReportItem;
-      
+
       return pw.Column(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
@@ -318,7 +342,8 @@ class _ReportViewScreenState extends State<ReportViewScreen>
             'Borrower: ${borrower.borrowerName}',
             style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
           ),
-          if (borrower.whatsappNumber != null && borrower.whatsappNumber!.isNotEmpty)
+          if (borrower.whatsappNumber != null &&
+              borrower.whatsappNumber!.isNotEmpty)
             pw.Text('WhatsApp: ${borrower.whatsappNumber}'),
           pw.SizedBox(height: 8),
           pw.Row(
@@ -326,20 +351,21 @@ class _ReportViewScreenState extends State<ReportViewScreen>
               _pdfInfoBox('Total Loans', borrower.totalLoans.toString()),
               _pdfInfoBox('Active', borrower.activeLoans.toString()),
               _pdfInfoBox('Completed', borrower.completedLoans.toString()),
-              _pdfInfoBox('Overdue', borrower.overdueLoans.toString(), 
-                color: borrower.overdueLoans > 0 ? PdfColors.red : null),
+              _pdfInfoBox('Overdue', borrower.overdueLoans.toString(),
+                  color: borrower.overdueLoans > 0 ? PdfColors.red : null),
             ],
           ),
           pw.SizedBox(height: 8),
           pw.Row(
             children: [
-              _pdfInfoBox('Total Amount', 
-                '$currencySymbol ${NumberFormat('#,##0.00').format(borrower.totalAmount)}'),
-              _pdfInfoBox('Paid Amount', 
-                '$currencySymbol ${NumberFormat('#,##0.00').format(borrower.paidAmount)}'),
-              _pdfInfoBox('Outstanding', 
-                '$currencySymbol ${NumberFormat('#,##0.00').format(borrower.outstandingAmount)}',
-                color: borrower.outstandingAmount > 0 ? PdfColors.orange : null),
+              _pdfInfoBox('Total Amount',
+                  '$currencySymbol ${NumberFormat('#,##0.00').format(borrower.totalAmount)}'),
+              _pdfInfoBox('Paid Amount',
+                  '$currencySymbol ${NumberFormat('#,##0.00').format(borrower.paidAmount)}'),
+              _pdfInfoBox('Outstanding',
+                  '$currencySymbol ${NumberFormat('#,##0.00').format(borrower.outstandingAmount)}',
+                  color:
+                      borrower.outstandingAmount > 0 ? PdfColors.orange : null),
             ],
           ),
         ],
@@ -366,17 +392,24 @@ class _ReportViewScreenState extends State<ReportViewScreen>
           if (item is LoanReportItem) {
             final loan = item.loan;
             final isOverdue = loan.isOverdue;
-            
+
             return pw.TableRow(
               children: [
                 _pdfTableCell(loan.borrowerName),
-                _pdfTableCell('$currencySymbol ${NumberFormat('#,##0.00').format(loan.loanAmount)}'),
+                _pdfTableCell(
+                    '$currencySymbol ${NumberFormat('#,##0.00').format(loan.loanAmount)}'),
                 _pdfTableCell(DateFormat('dd/MM/yyyy').format(loan.loanDate)),
-                _pdfTableCell(DateFormat('dd/MM/yyyy').format(loan.dueDate), 
+                _pdfTableCell(DateFormat('dd/MM/yyyy').format(loan.dueDate),
                     color: isOverdue ? PdfColors.red : null),
                 _pdfTableCell(
-                  loan.status == LoanStatus.completed ? 'Completed' : (isOverdue ? 'Overdue' : 'Active'),
-                  color: isOverdue ? PdfColors.red : (loan.status == LoanStatus.completed ? PdfColors.green : null),
+                  loan.status == LoanStatus.completed
+                      ? 'Completed'
+                      : (isOverdue ? 'Overdue' : 'Active'),
+                  color: isOverdue
+                      ? PdfColors.red
+                      : (loan.status == LoanStatus.completed
+                          ? PdfColors.green
+                          : null),
                 ),
               ],
             );
@@ -391,14 +424,15 @@ class _ReportViewScreenState extends State<ReportViewScreen>
               ],
             );
           }
-        }).toList(),
+        }),
         // Totals row if available
         if (section.sectionTotals.isNotEmpty)
           pw.TableRow(
             decoration: const pw.BoxDecoration(color: PdfColors.grey100),
             children: [
               _pdfTableCell('Total', isHeader: true),
-              _pdfTableCell('$currencySymbol ${NumberFormat('#,##0.00').format(section.sectionTotals['total'] ?? 0)}'),
+              _pdfTableCell(
+                  '$currencySymbol ${NumberFormat('#,##0.00').format(section.sectionTotals['total'] ?? 0)}'),
               _pdfTableCell(''),
               _pdfTableCell(''),
               _pdfTableCell(''),
@@ -618,7 +652,7 @@ class _ReportViewScreenState extends State<ReportViewScreen>
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Payment Completion Rate'),
+                const Text('Payment Completion Rate'),
                 const SizedBox(height: 4),
                 LinearProgressIndicator(
                   value: report.summary.paymentCompletionRate / 100,
@@ -776,10 +810,11 @@ class _ReportViewScreenState extends State<ReportViewScreen>
           mainAxisSpacing: 10,
           crossAxisSpacing: 10,
           children: [
-            _buildInfoBox('Total Amount', _formatCurrency(borrower.totalAmount)),
+            _buildInfoBox(
+                'Total Amount', _formatCurrency(borrower.totalAmount)),
             _buildInfoBox('Paid Amount', _formatCurrency(borrower.paidAmount)),
-            _buildInfoBox('Outstanding',
-                _formatCurrency(borrower.outstandingAmount),
+            _buildInfoBox(
+                'Outstanding', _formatCurrency(borrower.outstandingAmount),
                 highlight: borrower.outstandingAmount > 0),
           ],
         ),
@@ -843,7 +878,9 @@ class _ReportViewScreenState extends State<ReportViewScreen>
               const Spacer(),
               Chip(
                 label: Text(
-                  isCompleted ? 'Completed' : (isOverdue ? 'Overdue' : 'Active'),
+                  isCompleted
+                      ? 'Completed'
+                      : (isOverdue ? 'Overdue' : 'Active'),
                 ),
                 backgroundColor: isCompleted
                     ? Colors.green.withOpacity(0.2)
@@ -866,8 +903,8 @@ class _ReportViewScreenState extends State<ReportViewScreen>
               _buildInfoBox('Paid', _formatCurrency(loan.paidAmount)),
               _buildInfoBox('Remaining', _formatCurrency(loan.remainingAmount),
                   highlight: loan.remainingAmount > 0),
-              _buildInfoBox('Loan Date',
-                  DateFormat('dd MMM yyyy').format(loan.loanDate)),
+              _buildInfoBox(
+                  'Loan Date', DateFormat('dd MMM yyyy').format(loan.loanDate)),
               _buildInfoBox(
                   'Due Date', DateFormat('dd MMM yyyy').format(loan.dueDate),
                   highlight: isOverdue),
@@ -889,7 +926,8 @@ class _ReportViewScreenState extends State<ReportViewScreen>
 
   Widget _buildInfoBox(String label, String value, {bool highlight = false}) {
     final theme = Theme.of(context);
-    final valueColor = highlight ? Colors.red : theme.textTheme.bodyLarge?.color;
+    final valueColor =
+        highlight ? Colors.red : theme.textTheme.bodyLarge?.color;
 
     return Container(
       padding: const EdgeInsets.all(8.0),
