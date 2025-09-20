@@ -279,10 +279,14 @@ class ReportGenerationService {
         overdueLoans: overdueLoans,
       );
 
+      // Create a list of ReportItem (mixing BorrowerReportItem and LoanReportItem)
+      final List<ReportItem> sectionItems = <ReportItem>[borrowerItem];
+      sectionItems
+          .addAll(borrowerLoanList.map((loan) => LoanReportItem(loan: loan)));
+
       sections.add(ReportSection(
         title: borrower,
-        items: [borrowerItem] +
-            borrowerLoanList.map((loan) => LoanReportItem(loan: loan)).toList(),
+        items: sectionItems,
         sectionTotals: {
           'totalAmount': totalAmount,
           'paidAmount': paidAmount,
