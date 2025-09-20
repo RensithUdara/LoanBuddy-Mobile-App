@@ -22,7 +22,13 @@ class ReportViewScreen extends StatefulWidget {
 }
 
 class _ReportViewScreenState extends State<ReportViewScreen>
-    with SingleTickerProviderStateMixin {
+    with SingleT        GridView.count(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          crossAxisCount: 2,
+          childAspectRatio: 2.8,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,oviderStateMixin {
   late TabController _tabController;
   bool _isExporting = false;
 
@@ -791,7 +797,7 @@ class _ReportViewScreenState extends State<ReportViewScreen>
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           crossAxisCount: 4,
-          childAspectRatio: 2.0,
+          childAspectRatio: 2.3,
           mainAxisSpacing: 10,
           crossAxisSpacing: 10,
           children: [
@@ -807,7 +813,7 @@ class _ReportViewScreenState extends State<ReportViewScreen>
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           crossAxisCount: 3,
-          childAspectRatio: 2.0,
+          childAspectRatio: 2.3,
           mainAxisSpacing: 10,
           crossAxisSpacing: 10,
           children: [
@@ -896,7 +902,7 @@ class _ReportViewScreenState extends State<ReportViewScreen>
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             crossAxisCount: 3,
-            childAspectRatio: 2.5,
+            childAspectRatio: 2.8,
             mainAxisSpacing: 10,
             crossAxisSpacing: 10,
             children: [
@@ -931,27 +937,34 @@ class _ReportViewScreenState extends State<ReportViewScreen>
         highlight ? Colors.red : theme.textTheme.bodyLarge?.color;
 
     return Container(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey.shade300),
         borderRadius: BorderRadius.circular(4.0),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             label,
-            style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: Colors.grey[600],
+              fontSize: 11.0,
+            ),
             overflow: TextOverflow.ellipsis,
+            maxLines: 1,
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 2),
           Text(
             value,
             style: theme.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.bold,
               color: valueColor,
+              fontSize: 12.0,
             ),
             overflow: TextOverflow.ellipsis,
+            maxLines: 1,
           ),
         ],
       ),
