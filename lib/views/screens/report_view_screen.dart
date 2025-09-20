@@ -40,8 +40,8 @@ class _ReportViewScreenState extends State<ReportViewScreen>
 
   // Format currency values
   String _formatCurrency(double value) {
-    final currencySymbol =
-        Provider.of<SettingsProvider>(context, listen: false).currency;
+    // Always use Rs. as the currency symbol
+    const currencySymbol = 'Rs.';
     return '$currencySymbol ${NumberFormat('#,##0.00').format(value)}';
   }
 
@@ -53,9 +53,8 @@ class _ReportViewScreenState extends State<ReportViewScreen>
 
     try {
       final pdf = pw.Document();
-      final settingsProvider =
-          Provider.of<SettingsProvider>(context, listen: false);
-      final currencySymbol = settingsProvider.currency;
+      // Always use Rs. as the currency symbol
+      const currencySymbol = 'Rs.';
 
       // Add title page
       pdf.addPage(
