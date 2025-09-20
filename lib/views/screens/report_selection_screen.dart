@@ -74,7 +74,8 @@ class _ReportSelectionScreenState extends State<ReportSelectionScreen> {
     final success = await reportProvider.generateReport(
       type: _selectedReportType,
       dateFilter: _getDateFilter(),
-      borrowerFilter: _selectedReportType == ReportType.detailed ? _selectedBorrower : null,
+      borrowerFilter:
+          _selectedReportType == ReportType.detailed ? _selectedBorrower : null,
     );
 
     setState(() {
