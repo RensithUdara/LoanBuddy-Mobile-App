@@ -8,6 +8,7 @@ import '../widgets/app_drawer.dart';
 import '../widgets/common_widgets.dart';
 import 'add_loan_screen.dart';
 import 'loan_details_screen.dart';
+import 'report_selection_screen.dart';
 import 'settings_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -410,11 +411,12 @@ class _DashboardScreenState extends State<DashboardScreen>
               _selectedIndex = index;
             });
 
-            // This could be expanded to handle navigation between different screens
+            // Navigate between different screens
             if (index == 1) {
-              // Reports screen (placeholder)
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Reports feature coming soon')),
+              // Navigate to Reports screen
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ReportSelectionScreen()),
               );
               setState(() => _selectedIndex = 0);
             } else if (index == 2) {
@@ -499,17 +501,37 @@ class _DashboardScreenState extends State<DashboardScreen>
                       ),
                     ),
                     const Spacer(),
-                    Icon(
-                      Icons.insights,
-                      color: theme.colorScheme.primary,
-                      size: 20,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Financial Summary',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.primary,
-                        fontWeight: FontWeight.w500,
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const ReportSelectionScreen()),
+                        );
+                      },
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.primaryContainer.withOpacity(0.3),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.bar_chart,
+                              color: theme.colorScheme.primary,
+                              size: 18,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              'View Reports',
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.colorScheme.primary,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -584,6 +606,8 @@ class _DashboardScreenState extends State<DashboardScreen>
                   ),
                 ],
               ),
+              const SizedBox(height: 16),
+              _buildReportsCard(theme, loanProvider),
             ],
           ),
         );
