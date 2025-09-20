@@ -667,11 +667,12 @@ class _DashboardScreenState extends State<DashboardScreen>
     // Calculate some quick statistics for the reports card
     final totalLoanAmount = loanProvider.loans
         .map((loan) => loan.loanAmount)
-        .fold(0.0, (prev, amount) => prev + (amount as double));
-    
+        .fold(0.0, (prev, amount) => prev + (amount));
+
     final totalPaid = loanProvider.loans
         .map((loan) => loan.paidAmount)
-        .fold(0.0, (prev, paid) => prev + (paid as double));    final percentagePaid = totalLoanAmount > 0
+        .fold(0.0, (prev, paid) => prev + (paid));
+    final percentagePaid = totalLoanAmount > 0
         ? (totalPaid / totalLoanAmount * 100).toStringAsFixed(1)
         : '0.0';
 
