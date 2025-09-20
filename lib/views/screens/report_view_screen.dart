@@ -931,13 +931,15 @@ class _ReportViewScreenState extends State<ReportViewScreen>
         highlight ? Colors.red : theme.textTheme.bodyLarge?.color;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0), // Reduced vertical padding
+      padding: const EdgeInsets.symmetric(
+          horizontal: 8.0, vertical: 4.0), // Reduced vertical padding
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey.shade300),
         borderRadius: BorderRadius.circular(4.0),
       ),
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxHeight: 25.7), // Explicitly set max height
+        constraints:
+            const BoxConstraints(maxHeight: 25.7), // Explicitly set max height
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
