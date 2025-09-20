@@ -605,7 +605,7 @@ class _ReportViewScreenState extends State<ReportViewScreen>
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               crossAxisCount: 2,
-              childAspectRatio: 2.5,
+              childAspectRatio: 2.8,
               mainAxisSpacing: 10,
               crossAxisSpacing: 10,
               children: [
