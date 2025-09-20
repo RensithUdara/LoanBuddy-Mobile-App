@@ -1,18 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/report_model.dart';
+
 class SettingsProvider extends ChangeNotifier {
   SharedPreferences? _prefs;
   bool _isDarkMode = false;
   String _currency = 'Rs.';
   bool _useNotifications = true;
   String _reminderTime = '10:00';
+  
+  // Report Settings
+  ReportType _defaultReportType = ReportType.summary;
+  DateFilterType _defaultDateFilter = DateFilterType.thisMonth;
+  bool _includeCharts = true;
+  String _exportFormat = 'PDF'; // PDF or CSV
 
   // Getters
   bool get isDarkMode => _isDarkMode;
   String get currency => _currency;
   bool get useNotifications => _useNotifications;
   String get reminderTime => _reminderTime;
+  
+  // Report Settings Getters
+  ReportType get defaultReportType => _defaultReportType;
+  DateFilterType get defaultDateFilter => _defaultDateFilter;
+  bool get includeCharts => _includeCharts;
+  String get exportFormat => _exportFormat;
 
   // Constructor - Load settings
   SettingsProvider() {
