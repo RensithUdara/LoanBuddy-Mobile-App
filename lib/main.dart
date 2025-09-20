@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
           update: (context, loanProvider, previous) =>
               previous ?? PaymentProvider(loanProvider),
         ),
+        ChangeNotifierProvider(create: (_) => ReportProvider()),
       ],
       child: Consumer<SettingsProvider>(
         builder: (context, settingsProvider, _) {
