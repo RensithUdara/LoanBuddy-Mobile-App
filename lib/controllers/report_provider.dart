@@ -84,7 +84,11 @@ class ReportProvider extends ChangeNotifier {
     try {
       final loans = await _dbHelper.getLoans(status: 'active');
       final overdueLoans = loans.where((loan) => loan.isOverdue);
-      return overdueLoans.fold(0.0, (sum, loan) => sum + loan.remainingAmount);
+      double total = 0.0;
+      for (var loan in overdueLoans) {
+        total += loan.remainingAmount;
+      }
+      return total;
     } catch (e) {
       return 0.0;
     }
