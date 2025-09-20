@@ -937,7 +937,7 @@ class _ReportViewScreenState extends State<ReportViewScreen>
         borderRadius: BorderRadius.circular(4.0),
       ),
       child: ConstrainedBox(
-        constraints: BoxConstraints(maxHeight: 25.7), // Explicitly set max height
+        constraints: const BoxConstraints(maxHeight: 25.7), // Explicitly set max height
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
