@@ -11,10 +11,10 @@ class SettingsProvider extends ChangeNotifier {
   String _reminderTime = '10:00';
 
   // Report Settings
-  final ReportType _defaultReportType = ReportType.summary;
-  final DateFilterType _defaultDateFilter = DateFilterType.thisMonth;
-  final bool _includeCharts = true;
-  final String _exportFormat = 'PDF'; // PDF or CSV
+  ReportType _defaultReportType = ReportType.summary;
+  DateFilterType _defaultDateFilter = DateFilterType.thisMonth;
+  bool _includeCharts = true;
+  String _exportFormat = 'PDF'; // PDF or CSV
 
   // Getters
   bool get isDarkMode => _isDarkMode;
