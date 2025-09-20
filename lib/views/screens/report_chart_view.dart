@@ -797,7 +797,7 @@ class _ReportChartViewState extends State<ReportChartView> {
       i++;
     }
 
-    if (sections.isEmpty) {
+    if (pieChartSections.isEmpty) {
       return const Center(child: Text('No overdue loans'));
     }
 
@@ -820,7 +820,7 @@ class _ReportChartViewState extends State<ReportChartView> {
                   Expanded(
                     child: PieChart(
                       PieChartData(
-                        sections: sections,
+                        sections: pieChartSections,
                         sectionsSpace: 2,
                         centerSpaceRadius: 40,
                       ),
