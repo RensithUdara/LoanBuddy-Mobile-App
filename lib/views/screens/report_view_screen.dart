@@ -931,31 +931,37 @@ class _ReportViewScreenState extends State<ReportViewScreen>
         highlight ? Colors.red : theme.textTheme.bodyLarge?.color;
 
     return Container(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0), // Reduced vertical padding
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey.shade300),
         borderRadius: BorderRadius.circular(4.0),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            label,
-            style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-          ),
-          const SizedBox(height: 2), // Reduced spacing from 4 to 2
-          Text(
-            value,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: valueColor,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxHeight: 25.7), // Explicitly set max height
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              label,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: Colors.grey[600],
+                fontSize: 10, // Reduce font size
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
             ),
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-          ),
+            const SizedBox(height: 1), // Minimum spacing
+            Text(
+              value,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: valueColor,
+                fontSize: 11, // Reduce font size
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
         ],
       ),
     );
