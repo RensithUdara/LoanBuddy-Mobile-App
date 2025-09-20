@@ -8,10 +8,9 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../models/loan_model.dart';
-
 import '../../controllers/report_provider.dart';
 import '../../controllers/settings_provider.dart';
+import '../../models/loan_model.dart';
 import '../../models/report_model.dart';
 import 'report_chart_view.dart';
 
