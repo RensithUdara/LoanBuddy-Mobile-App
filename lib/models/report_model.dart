@@ -1,15 +1,16 @@
 import 'package:intl/intl.dart';
+
 import 'loan_model.dart';
 import 'payment_model.dart';
 
 /// Enum for different report types
 enum ReportType {
-  summary,      // Overall summary of all loans
-  detailed,     // Detailed report with all loans and payments
-  overdue,      // Only overdue loans
-  byBorrower,   // Grouped by borrower name
-  byDate,       // Grouped by date ranges
-  paymentFlow,  // Cash flow of payments
+  summary, // Overall summary of all loans
+  detailed, // Detailed report with all loans and payments
+  overdue, // Only overdue loans
+  byBorrower, // Grouped by borrower name
+  byDate, // Grouped by date ranges
+  paymentFlow, // Cash flow of payments
 }
 
 /// Report filter for date range selection
@@ -114,7 +115,7 @@ class Report {
     required this.sections,
     required this.summary,
     DateTime? generatedAt,
-  }) : this.generatedAt = generatedAt ?? DateTime.now();
+  }) : generatedAt = generatedAt ?? DateTime.now();
 
   /// Get a formatted string of when the report was generated
   String get formattedGeneratedDate =>
@@ -198,7 +199,7 @@ class ReportSection {
     required this.title,
     required this.items,
     Map<String, double>? sectionTotals,
-  }) : this.sectionTotals = sectionTotals ?? {};
+  }) : sectionTotals = sectionTotals ?? {};
 
   Map<String, dynamic> toJson() {
     return {
@@ -212,9 +213,9 @@ class ReportSection {
 /// Base class for report items
 abstract class ReportItem {
   final String title;
-  
+
   ReportItem({required this.title});
-  
+
   Map<String, dynamic> toJson();
 }
 
@@ -222,12 +223,12 @@ abstract class ReportItem {
 class LoanReportItem extends ReportItem {
   final Loan loan;
   final List<Payment>? payments;
-  
+
   LoanReportItem({
     required this.loan,
     this.payments,
   }) : super(title: loan.borrowerName);
-  
+
   @override
   Map<String, dynamic> toJson() {
     return {
@@ -250,7 +251,7 @@ class BorrowerReportItem extends ReportItem {
   final int activeLoans;
   final int completedLoans;
   final int overdueLoans;
-  
+
   BorrowerReportItem({
     required this.borrowerName,
     this.whatsappNumber,
@@ -262,7 +263,7 @@ class BorrowerReportItem extends ReportItem {
     required this.completedLoans,
     required this.overdueLoans,
   }) : super(title: borrowerName);
-  
+
   @override
   Map<String, dynamic> toJson() {
     return {
@@ -289,7 +290,7 @@ class DateGroupReportItem extends ReportItem {
   final double totalReceived;
   final int newLoans;
   final int completedLoans;
-  
+
   DateGroupReportItem({
     required this.startDate,
     required this.endDate,
@@ -298,7 +299,7 @@ class DateGroupReportItem extends ReportItem {
     required this.newLoans,
     required this.completedLoans,
   }) : super(title: DateFormat('MMMM yyyy').format(startDate));
-  
+
   @override
   Map<String, dynamic> toJson() {
     return {
