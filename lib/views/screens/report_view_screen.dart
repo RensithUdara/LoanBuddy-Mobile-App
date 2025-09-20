@@ -298,8 +298,7 @@ class _ReportViewScreenState extends State<ReportViewScreen>
             final dateItem = item as DateGroupReportItem;
             return pw.TableRow(
               children: [
-                pdfTableCell(
-                    DateFormat('MMM yyyy').format(dateItem.startDate)),
+                pdfTableCell(DateFormat('MMM yyyy').format(dateItem.startDate)),
                 pdfTableCell(dateItem.newLoans.toString()),
                 pdfTableCell(
                     '$currencySymbol ${NumberFormat('#,##0.00').format(dateItem.totalLent)}'),
@@ -811,8 +810,7 @@ class _ReportViewScreenState extends State<ReportViewScreen>
           mainAxisSpacing: 10,
           crossAxisSpacing: 10,
           children: [
-            buildInfoBox(
-                'Total Amount', formatCurrency(borrower.totalAmount)),
+            buildInfoBox('Total Amount', formatCurrency(borrower.totalAmount)),
             buildInfoBox('Paid Amount', formatCurrency(borrower.paidAmount)),
             buildInfoBox(
                 'Outstanding', formatCurrency(borrower.outstandingAmount),
