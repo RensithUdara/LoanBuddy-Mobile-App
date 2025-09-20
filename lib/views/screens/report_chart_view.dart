@@ -768,7 +768,7 @@ class _ReportChartViewState extends State<ReportChartView> {
     }
 
     // Create data for the chart
-    List<PieChartSectionData> sections = [];
+    List<PieChartSectionData> pieChartSections = [];
     int i = 0;
     final colors = [
       Colors.yellow,
@@ -780,7 +780,7 @@ class _ReportChartViewState extends State<ReportChartView> {
     for (var period in periods) {
       final value = overdueValues[period] ?? 0.0;
       if (value > 0) {
-        sections.add(
+        pieChartSections.add(
           PieChartSectionData(
             value: value,
             title: period,
