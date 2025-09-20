@@ -10,6 +10,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../controllers/report_provider.dart';
 import '../../controllers/settings_provider.dart';
+import '../../models/loan_model.dart';
 import '../../models/report_model.dart';
 import 'report_chart_view.dart';
 
@@ -227,8 +228,8 @@ class _ReportViewScreenState extends State<ReportViewScreen>
 
       // Share the PDF
       if (mounted) {
-        await Share.shareFiles(
-          [file.path],
+        await Share.shareXFiles(
+          [XFile(file.path)],
           text: 'LoanBuddy ${report.title}',
           subject: report.title,
         );

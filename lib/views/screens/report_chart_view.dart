@@ -701,8 +701,6 @@ class _ReportChartViewState extends State<ReportChartView> {
                         section.sectionTotals['totalAmount'] ?? 0.0;
                     final paidAmount =
                         section.sectionTotals['paidAmount'] ?? 0.0;
-                    final outstandingAmount =
-                        section.sectionTotals['outstandingAmount'] ?? 0.0;
 
                     return BarChartGroupData(
                       x: index,
