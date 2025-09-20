@@ -663,6 +663,130 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
+  Widget _buildReportsCard(ThemeData theme, LoanProvider loanProvider) {
+    // Calculate some quick statistics for the reports card
+    final totalLoanAmount = loanProvider.loans
+        .map((loan) => loan.amount)
+        .fold(0.0, (prev, amount) => prev + amount);
+    
+    final totalPaid = loanProvider.loans
+        .map((loan) => loan.totalPaid)
+        .fold(0.0, (prev, paid) => prev + paid);
+    
+    final percentagePaid = totalLoanAmount > 0 
+        ? (totalPaid / totalLoanAmount * 100).toStringAsFixed(1) 
+        : '0.0';
+    
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ReportSelectionScreen()),
+          );
+        },
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.analytics_outlined,
+                    color: theme.colorScheme.primary,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Financial Reports',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Spacer(),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    color: theme.colorScheme.primary,
+                    size: 16,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildReportMetric(
+                    title: 'Loan Recovery', 
+                    value: '$percentagePaid%',
+                    icon: Icons.trending_up,
+                    color: percentagePaid.compareTo('50.0') >= 0 ? Colors.green : Colors.orange,
+                    theme: theme,
+                  ),
+                  _buildReportMetric(
+                    title: 'Overdue', 
+                    value: '${loanProvider.loans.where((loan) => loan.isOverdue).length}',
+                    icon: Icons.warning_amber_rounded,
+                    color: Colors.red,
+                    theme: theme,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Tap to generate detailed reports and insights',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurface.withOpacity(0.6),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+  
+  Widget _buildReportMetric({
+    required String title,
+    required String value,
+    required IconData icon,
+    required Color color,
+    required ThemeData theme,
+  }) {
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(6),
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.1),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(icon, color: color, size: 16),
+        ),
+        const SizedBox(width: 6),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurface.withOpacity(0.7),
+              ),
+            ),
+            Text(
+              value,
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
   Widget _buildStatusCard({
     required String title,
     required String value,
