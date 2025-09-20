@@ -22,13 +22,7 @@ class ReportViewScreen extends StatefulWidget {
 }
 
 class _ReportViewScreenState extends State<ReportViewScreen>
-    with SingleT        GridView.count(
-          shrinkWrap = true,
-          physics = const NeverScrollableScrollPhysics(),
-          crossAxisCount = 2,
-          childAspectRatio = 2.8,
-          mainAxisSpacing = 10,
-          crossAxisSpacing = 10,oviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late TabController tabController;
   bool isExporting = false;
 
