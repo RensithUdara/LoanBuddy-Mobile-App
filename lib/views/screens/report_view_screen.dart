@@ -938,13 +938,15 @@ class _ReportViewScreenState extends State<ReportViewScreen>
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             label,
             style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
             overflow: TextOverflow.ellipsis,
+            maxLines: 1,
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 2), // Reduced spacing from 4 to 2
           Text(
             value,
             style: theme.textTheme.bodyMedium?.copyWith(
@@ -952,6 +954,7 @@ class _ReportViewScreenState extends State<ReportViewScreen>
               color: valueColor,
             ),
             overflow: TextOverflow.ellipsis,
+            maxLines: 1,
           ),
         ],
       ),
