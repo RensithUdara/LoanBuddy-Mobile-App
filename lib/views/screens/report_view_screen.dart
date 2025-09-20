@@ -962,7 +962,8 @@ class _ReportViewScreenState extends State<ReportViewScreen>
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
             ),
-        ],
+          ],
+        ),
       ),
     );
   }
