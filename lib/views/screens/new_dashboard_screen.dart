@@ -112,7 +112,6 @@ class _DashboardScreenState extends State<DashboardScreen>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final size = MediaQuery.of(context).size;
     final bool isDarkMode = theme.brightness == Brightness.dark;
 
     return Scaffold(
