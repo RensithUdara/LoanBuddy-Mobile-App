@@ -668,15 +668,15 @@ class _DashboardScreenState extends State<DashboardScreen>
     final totalLoanAmount = loanProvider.loans
         .map((loan) => loan.amount)
         .fold(0.0, (prev, amount) => prev + amount);
-    
+
     final totalPaid = loanProvider.loans
         .map((loan) => loan.totalPaid)
         .fold(0.0, (prev, paid) => prev + paid);
-    
-    final percentagePaid = totalLoanAmount > 0 
-        ? (totalPaid / totalLoanAmount * 100).toStringAsFixed(1) 
+
+    final percentagePaid = totalLoanAmount > 0
+        ? (totalPaid / totalLoanAmount * 100).toStringAsFixed(1)
         : '0.0';
-    
+
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -684,7 +684,8 @@ class _DashboardScreenState extends State<DashboardScreen>
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const ReportSelectionScreen()),
+            MaterialPageRoute(
+                builder: (context) => const ReportSelectionScreen()),
           );
         },
         borderRadius: BorderRadius.circular(12),
@@ -719,15 +720,18 @@ class _DashboardScreenState extends State<DashboardScreen>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _buildReportMetric(
-                    title: 'Loan Recovery', 
+                    title: 'Loan Recovery',
                     value: '$percentagePaid%',
                     icon: Icons.trending_up,
-                    color: percentagePaid.compareTo('50.0') >= 0 ? Colors.green : Colors.orange,
+                    color: percentagePaid.compareTo('50.0') >= 0
+                        ? Colors.green
+                        : Colors.orange,
                     theme: theme,
                   ),
                   _buildReportMetric(
-                    title: 'Overdue', 
-                    value: '${loanProvider.loans.where((loan) => loan.isOverdue).length}',
+                    title: 'Overdue',
+                    value:
+                        '${loanProvider.loans.where((loan) => loan.isOverdue).length}',
                     icon: Icons.warning_amber_rounded,
                     color: Colors.red,
                     theme: theme,
@@ -747,7 +751,7 @@ class _DashboardScreenState extends State<DashboardScreen>
       ),
     );
   }
-  
+
   Widget _buildReportMetric({
     required String title,
     required String value,
