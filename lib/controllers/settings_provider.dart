@@ -40,7 +40,7 @@ class SettingsProvider extends ChangeNotifier {
     _currency = _prefs?.getString('currency') ?? 'Rs.';
     _useNotifications = _prefs?.getBool('useNotifications') ?? true;
     _reminderTime = _prefs?.getString('reminderTime') ?? '10:00';
-    
+
     // Load report settings
     final savedReportType = _prefs?.getString('defaultReportType');
     if (savedReportType != null) {
@@ -49,7 +49,7 @@ class SettingsProvider extends ChangeNotifier {
         orElse: () => ReportType.summary,
       );
     }
-    
+
     final savedDateFilter = _prefs?.getString('defaultDateFilter');
     if (savedDateFilter != null) {
       _defaultDateFilter = DateFilterType.values.firstWhere(
@@ -57,10 +57,10 @@ class SettingsProvider extends ChangeNotifier {
         orElse: () => DateFilterType.thisMonth,
       );
     }
-    
+
     _includeCharts = _prefs?.getBool('includeCharts') ?? true;
     _exportFormat = _prefs?.getString('exportFormat') ?? 'PDF';
-    
+
     notifyListeners();
   }
 
