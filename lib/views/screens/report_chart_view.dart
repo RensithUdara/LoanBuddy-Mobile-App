@@ -628,14 +628,12 @@ class _ReportChartViewState extends State<ReportChartView> {
                               section.sectionTotals['totalAmount'] ?? 0.0;
                           final paidAmount =
                               section.sectionTotals['paidAmount'] ?? 0.0;
-                          final outstandingAmount =
-                              section.sectionTotals['outstandingAmount'] ?? 0.0;
 
                           return BarTooltipItem(
                             '${section.title}\n'
                             'Total: ${NumberFormat.currency(symbol: '₹', decimalDigits: 0).format(totalAmount)}\n'
                             'Paid: ${NumberFormat.currency(symbol: '₹', decimalDigits: 0).format(paidAmount)}\n'
-                            'Outstanding: ${NumberFormat.currency(symbol: '₹', decimalDigits: 0).format(outstandingAmount)}',
+                            'Outstanding: ${NumberFormat.currency(symbol: '₹', decimalDigits: 0).format(totalAmount - paidAmount)}',
                             const TextStyle(color: Colors.white),
                           );
                         }
