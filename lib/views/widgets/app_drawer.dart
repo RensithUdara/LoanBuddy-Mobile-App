@@ -5,6 +5,7 @@ import '../../controllers/settings_provider.dart';
 import '../screens/analytics_dashboard_screen.dart';
 import '../screens/custom_reminder_scheduling_screen.dart';
 import '../screens/data_export_import_screen.dart';
+import '../screens/report_selection_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -62,6 +63,20 @@ class AppDrawer extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const AnalyticsDashboardScreen(),
+                ),
+              );
+            },
+          ),
+          _buildDrawerItem(
+            context,
+            icon: Icons.bar_chart,
+            title: 'Reports',
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ReportSelectionScreen(),
                 ),
               );
             },

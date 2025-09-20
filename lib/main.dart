@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'controllers/loan_provider.dart';
 import 'controllers/payment_provider.dart';
+import 'controllers/report_provider.dart';
 import 'controllers/settings_provider.dart';
 // Commented out to fix build error
 // import 'services/simple_notification_service.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
           update: (context, loanProvider, previous) =>
               previous ?? PaymentProvider(loanProvider),
         ),
+        ChangeNotifierProvider(create: (_) => ReportProvider()),
       ],
       child: Consumer<SettingsProvider>(
         builder: (context, settingsProvider, _) {
